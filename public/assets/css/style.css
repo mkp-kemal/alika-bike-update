@@ -1,0 +1,356 @@
+:root {
+    --cyan: rgb(0, 110, 255);
+    --young-blue: #006dcd;
+    --blue: #006dcd;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+.body {
+    max-width: 450px;
+    margin: 0 auto 0 auto;
+    font-family: 'Source Sans 3', sans-serif;
+}
+
+.header {
+    height: 100vh;
+    background: rgb(235, 235, 235);
+    /* text-align: center; */
+    overflow-y: scroll;
+}
+
+.outBody {
+    background-image: url('https://www.sepulsa.com/static/homepage/background2.svg');
+    background-color: #52525234;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* NAVBAR================================================================= */
+.navbar {
+    padding: 13px;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.30);
+    z-index: 999;
+    background-image: url('../imgs/bg-navbar.png');
+    color: white;
+    position: fixed;
+    width: 100%;
+    max-width: 450px;
+}
+
+.navbar-nav .nav-item {
+    margin-right: 10px;
+}
+
+/* SEARCH NAVBAR================================================================= */
+.search-container {
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.search-box {
+    background-color: rgba(198, 198, 198, 0.268);
+    font-size: 12px;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    height: 30px;
+    width: 200px;
+}
+
+.search-box::placeholder {
+    color: white;
+    font-size: 12px;
+}
+
+.search-box:focus {
+    outline: none;
+    background-color: rgba(145, 35, 35, 0.268);
+}
+
+/* ICON NAVBAR================================================================= */
+ul.nav-icon {
+    /* background-color: aqua; */
+    list-style: none;
+    margin-top: 13px;
+}
+
+ul.nav-icon li {
+    display: inline;
+    margin-right: 30px;
+}
+
+ul.nav-icon li:hover {
+    color: var(--cyan);
+}
+
+/* RESPONSIF < 400 Pixel */
+@media (max-width: 400px) {
+    .search-box {
+        width: 150px;
+    }
+
+    ul.nav-icon li {
+        margin-right: 15px;
+    }
+}
+
+/* RESPONSIF < 350 Pixel */
+@media (max-width: 350px) {
+    .search-box {
+        width: 50px;
+    }
+
+    ul.nav-icon li {
+        margin-right: 15px;
+    }
+}
+
+/* RESPONSIF < 350 Pixel */
+@media (max-width: 350px) {
+    .search-box {
+        width: 120px;
+    }
+
+    ul.nav-icon li {
+        margin-right: 10px;
+    }
+}
+
+/* KATEGORI================================================================= */
+.container {
+    margin-top: 70px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    height: 110px;
+}
+
+.body-category {
+    position: fixed;
+    z-index: 999;
+    padding: 0px;
+    border-radius: 6px;
+    background-color: white;
+    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.30);
+}
+
+.in-body-category {
+    /* background-color: #c69f73; */
+    /* padding: 10px; */
+    width: 100%;
+    height: 100%;
+}
+
+.category {
+    list-style-type: none;
+    padding: 0;
+    text-align: center;
+    height: 40px;
+    margin: 10px;
+    display: flex;
+}
+
+.category a {
+    text-decoration: none;
+    display: block;
+    font-family: Arial;
+    position: relative;
+    color: black;
+    /* padding: .5em 0 */
+}
+
+.category a:hover {
+    color: #c69f73;
+}
+
+.category a:hover:before {
+    left: 0;
+    width: 100%;
+}
+
+.category a:before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: .5px;
+    background-color: #c69f73;
+    bottom: calc(-1px);
+    right: 0;
+    transition: all 0.3s cubic-bezier(0.785, 0.135, 0.15, 0.86);
+}
+
+.category .category-link-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    width: 390px;
+}
+
+.category .category-link-nav a svg {
+    width: 30px;
+}
+
+@media screen and (max-width: 410px) {
+    .category .category-link-nav {
+        width: 350px;
+    }
+}
+
+@media screen and (max-width: 350px) {
+    .category .category-link-nav {
+        width: 260px;
+    }
+}
+
+/* PTT================================================================= */
+
+.wrapping {
+    border-radius: 6px;
+    background-color: white;
+}
+
+.container-products {
+    padding: 20px;
+}
+
+
+div.scrollmenu {
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+div.scrollmenu a {
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding-top: 14px;
+    padding-bottom: 14px;
+    text-decoration: none;
+}
+
+.scrollmenu a .card .card-body small {
+    white-space: normal;
+}
+
+.card {
+    cursor: pointer;
+    width: 150px;
+    margin: 5px;
+    white-space: none;
+}
+
+.header .activated {
+    background-color: var(--young-blue);
+    color: white;
+    cursor: default;
+}
+
+.header .body-ptt {
+    /* background-color: rebeccapurple; */
+    background-image: url('../imgs/ptt.png');
+}
+
+.body-products-sepeda {
+    background-image: url('../imgs/bg3.png');
+    margin-top: 20px;
+    margin-bottom: 20px;
+    color: white;
+}
+
+
+/* BOTTOM NAVIGATION================================================================= */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    border-radius: 10px 10px 0 0;
+    width: 100%;
+    left: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    -webkit-transform: translate(-50%, 0%);
+    -moz-transform: translate(-50%, 0%);
+    -ms-transform: translate(-50%, 0%);
+    -o-transform: translate(-50%, 0%);
+    transform: translate(-50%, 0%);
+    padding: 10px;
+    /* background-color: #2A6FFC; */
+    background-image: url('../imgs/bg-navbar.png');
+}
+
+.bottom-link-nav {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    width: 450px;
+}
+
+.bottom-nav a {
+    color: white;
+    cursor: pointer;
+}
+
+.bottom-nav a svg {
+    width: 30px;
+}
+
+.bottom-nav a:nth-child(2) {
+    transform: scale(1.5) translateY(-10px);
+    background-color: white;
+    border-radius: 1000px;
+    width: 30px;
+    height: 30px;
+    border: 2px solid var(--young-blue);
+    color: var(--cyan);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.bottom-link-nav a svg {
+    width: 30px;
+}
+
+
+.body-products-suku-cadang {
+    background-image: url('../imgs/bg4.png');
+    margin-top: 0px;
+    margin-bottom: 100px;
+    color: white;
+}
+
+.info-crousel {
+    /* background-color: var(--young-blue); */
+    background-image: url('../imgs/bg-navbar.png');
+    border-radius: 20px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 50px;
+    margin-top: 10px;
+}
+
+/* ADMIN================================================================= */
+/* ADMIN================================================================= */
+/* ADMIN================================================================= */
+
+
+
+/* CSS Styling */
+.carousel {
+    cursor: grab;
+    user-select: none;
+  }
+  
+  .carousel:active {
+    cursor: grabbing;
+  }
+  
