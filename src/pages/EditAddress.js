@@ -145,7 +145,7 @@ export function EditAddress() {
                     </nav>
 
                     {/* FORMS */}
-                    <div className="body-products" style={{ marginTop: '60px', fontSize: '16px', }}>
+                    <div className="body-products" style={{ marginTop: '60px', fontSize: '16px' }}>
                         <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
                             <p style={{  color: 'black', fontWeight: 'bold' }}>
                                 Data Penerima

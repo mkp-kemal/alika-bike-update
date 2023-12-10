@@ -124,7 +124,7 @@ export function AddAddress() {
                     </nav>
 
                     {/* FORMS */}
-                    <div className="body-products" style={{ marginTop: '60px' }}>
+                    <div className="body-products" style={{ marginTop: '60px', fontSize: '16px' }}>
                         <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
                             <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
                                 Data Penerima

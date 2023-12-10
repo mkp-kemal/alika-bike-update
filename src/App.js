@@ -13,6 +13,7 @@ import { HomeAdmin } from './Admin/HomeAdmin';
 import { Orders } from './Admin/Orders';
 import { Test } from './pages/Test';
 import { ThanksPayment } from './pages/Thanks';
+import { Invoice } from './pages/Invoice';
 
 
 function App() {
@@ -30,6 +31,7 @@ function App() {
 
         <Route path='/test' element={<Test/>} />
         <Route path='/payment-success' element={<ThanksPayment/>} />
+        <Route path='/invoice' element={<Invoice/>} />
 
         {/* ADMIN */}
         <Route path='/admin' element={<HomeAdmin/>} />

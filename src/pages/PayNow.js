@@ -19,24 +19,9 @@ export function PayNow() {
     }
 
     // MENAMPILKAN PRODUCTS PADA TABLE BASKET
-    // const [dataProducts, setDataProducts] = useState([]);
     const dataProducts = JSON.parse(localStorage.getItem('@product'));
     const [totalAmount, setTotalAmount] = useState('');
     const [totalRow, setTotalRow] = useState(0);
-    // const getDataProducts = () => {
-    //     axios.get(baseURLAPI("pay_now.php/") + idUser)
-    //         .then((response) => {
-    //             setTotalRow(response.data[0].totalRows);
-    //             if (response.data[0].totalRows <= 0) {
-    //                 navigate('/');
-    //             } else {
-    //                 setDataProducts(response.data[0].rowproductdata);
-    //                 setTotalAmount(response.data[0].totalAmount);
-    //             }
-    //         }).catch((error) => {
-    //             console.log(error);
-    //         });
-    // }
 
     // MENAMPILKAN ADDRESS
     const [totalRowAddress, setTotalRowAddress] = useState(0);
@@ -53,13 +38,6 @@ export function PayNow() {
     }
 
     useEffect(() => {
-        // getDataProducts();
-    }, []);
-
-    useEffect(() => {
-        // if (totalRow === null ) {
-        //     navigate('/');
-        // } else {
         getDataAddress();
         setTimeout(() => {
             setIsloading(false);
@@ -87,67 +65,7 @@ export function PayNow() {
         return hargaAsal - potonganDiskon;
     };
 
-    // PILIH PEMBAYARAN
-    const [selectedPayment, setSelectedPayment] = useState(null);
-    let isTruePay = false;
-    let isFreeAdmin = false;
-    let admin = 0
-    if (selectedPayment === "dana") {
-        isTruePay = true;
-
-        let biayaAdmin = 5000;
-        if (biayaAdmin == 0) {
-            isFreeAdmin = true;
-        }
-        // let x = parseInt(selectedProduct.amount) + biayaAdmin;
-        // amount = formatRupiah(x);
-        admin = biayaAdmin;
-        // getAdmin = biayaAdmin;
-
-        const img = "https://i.postimg.cc/1t3FBX3x/Logo-DANA-PNG-1080p-File-Vector69.png";
-        // payment_img = img;
-    } else if (selectedPayment === "gopay") {
-        isTruePay = true;
-        let biayaAdmin = 0;
-        if (biayaAdmin == 0) {
-            isFreeAdmin = true;
-        }
-        admin = biayaAdmin;
-
-        const img = "https://i.postimg.cc/1t3FBX3x/Logo-DANA-PNG-1080p-File-Vector69.png";
-        // payment_img = img;
-
-    } else if (selectedPayment === "bank") {
-        isTruePay = true;
-        let biayaAdmin = 7000;
-        if (biayaAdmin == 0) {
-            isFreeAdmin = true;
-        }
-        admin = biayaAdmin;
-
-        const img = "https://i.postimg.cc/1t3FBX3x/Logo-DANA-PNG-1080p-File-Vector69.png";
-        // payment_img = img;
-
-    } else if (selectedPayment === "cod") {
-        isTruePay = true;
-        let biayaAdmin = 15000;
-        if (biayaAdmin == 0) {
-            isFreeAdmin = true;
-        }
-        admin = biayaAdmin;
-
-        const img = "https://i.postimg.cc/1t3FBX3x/Logo-DANA-PNG-1080p-File-Vector69.png";
-        // payment_img = img;
-
-    } else {
-        isTruePay = false;
-        let biayaAdmin = 0;
-        admin = biayaAdmin;
-        // getAdmin = biayaAdmin;
-        const img = null;
-    };
-
-    let final_total = parseInt(dataProducts.total) + parseInt(admin);
+    let final_total = parseInt(dataProducts.total);
 
     // HANDLE  BAYAR SEKARANG
     const handlePayNow = async () => {
@@ -156,16 +74,10 @@ export function PayNow() {
         const formData = new FormData();
         formData.append('id_user', idUser);
         formData.append('id_transaction', id_transaction);
-        // Buat array baru untuk menyimpan code_products
-        // const codeProductsArray = dataProducts.map((item) => item.code_products);
-        // const codeProductsString = codeProductsArray.join(',');
-        // console.log(codeProductsString);
         formData.append('code_products', dataProducts.code);
-        // const qtyArray = dataProducts.map((item) => item.qty);
-        // const qtyString = qtyArray.join(',');
         formData.append('qty', dataProducts.count);
         formData.append('amount', final_total);
-        formData.append('payment', selectedPayment);
+        formData.append('payment', '-');
         formData.append('order_name', dataAddress.name);
         formData.append('whatsapp', dataAddress.whatsapp);
         formData.append('order_address', dataAddress.location);
@@ -198,11 +110,7 @@ export function PayNow() {
             second: '2-digit',
         });
         formData.append('exp_payment', expPayDate);
-        if (selectedPayment === 'cod') {
-            formData.append('is_pay', 'Yes');
-        } else {
-            formData.append('is_pay', 'No');
-        }
+        formData.append('is_pay', 'No');
         formData.append('pay_now', 'Yes');
 
         try {
@@ -222,7 +130,7 @@ export function PayNow() {
                     <ToastContainer />
 
                     {/* NAVBAR */}
-                    <nav className="navbar text-center" style={{ position: 'fixed' }}>
+                    <nav className="navbar text-center" style={{ position: 'fixed', padding: '15px' }}>
                         <div style={{ cursor: 'pointer' }} onClick={() => { window.history.back() }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M244 400L100 256l144-144M120 256h292" /></svg>
                         </div>
@@ -251,7 +159,7 @@ export function PayNow() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div style={{ borderRadius: '10px', boxShadow: '2px 2px 5px  gray', padding: '10px', marginTop: '10px' }}>
+                                        <div style={{ borderRadius: '10px', boxShadow: '2px 2px 5px  gray', padding: '10px', marginTop: '5px' }}>
                                             <div style={{ display: 'flex' }}>
                                                 <div style={{ width: '100%' }}>
                                                     <div className="d-flex justify-content-between">
@@ -262,14 +170,12 @@ export function PayNow() {
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m10.6 16.6l7.05-7.05l-1.4-1.4l-5.65 5.65l-2.85-2.85l-1.4 1.4l4.25 4.25ZM12 22q-2.075 0-3.9-.788t-3.175-2.137q-1.35-1.35-2.137-3.175T2 12q0-2.075.788-3.9t2.137-3.175q1.35-1.35 3.175-2.137T12 2q2.075 0 3.9.788t3.175 2.137q1.35 1.35 2.138 3.175T22 12q0 2.075-.788 3.9t-2.137 3.175q-1.35 1.35-3.175 2.138T12 22Z" /></svg>
                                                         </div>
                                                     </div>
-                                                    <p className="card-text" style={{ fontSize: '11px', color: 'black', fontFamily: 'inherit', marginTop: '-15px' }}><b>{dataAddress.location}({dataAddress.landmark})</b></p>
+                                                    <p className="card-text" style={{ fontSize: '11px', color: 'black', fontFamily: 'inherit', marginTop: '-5px' }}><b>{dataAddress.location}({dataAddress.landmark})</b></p>
                                                     <p className="card-text text-info" style={{ cursor: 'pointer', fontSize: '11px', fontFamily: 'inherit', marginTop: '0px' }} onClick={() => { navigate('/edit-address') }}><b>Ubah Alamat</b></p>
                                                 </div>
                                             </div>
                                         </div>
                                     )}
-
-
                                 </div>
                             </div>
 
@@ -284,7 +190,7 @@ export function PayNow() {
                                     <div style={{ borderRadius: '10px', boxShadow: '2px 2px 5px  gray', padding: '10px', marginTop: '10px' }}>
                                         <div style={{ display: 'flex' }}>
                                             <div>
-                                                <img src={dataProducts.image} width={80} style={{ cursor: 'pointer' }} alt="img" />
+                                                <img src={dataProducts.image} width={80} alt="img" />
                                             </div>
                                             <div style={{ marginLeft: '5px', width: '100%' }}>
                                                 <p style={{ fontSize: '12px', color: 'gray' }}>
@@ -293,11 +199,11 @@ export function PayNow() {
                                                 {dataProducts.discount <= 0 ? (
                                                     null
                                                 ) : (
-                                                    <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '-10px' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{dataProducts.discount}%</button><s>{Rupiah(dataProducts.price)}</s></p>
+                                                    <p className="card-text" style={{ fontSize: '12px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '-10px' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{dataProducts.discount}%</button><s>{Rupiah(dataProducts.price)}</s></p>
                                                 )}
                                                 <div style={{ color: 'green', alignItems: 'center' }} className="d-flex justify-content-between">
-                                                    <small style={{ fontWeight: 'bold' }}><b>{Rupiah(hitungHargaSetelahDiskon(dataProducts.price, dataProducts.discount))}</b></small>
-                                                    <small className="text-secondary" style={{ fontSize: '12px' }}>{dataProducts.count} Barang</small>
+                                                    <small style={{ fontSize: '13px', fontWeight: 'bold' }}><b>{Rupiah(hitungHargaSetelahDiskon(dataProducts.price, dataProducts.discount))}</b></small>
+                                                    <small className="text-secondary" style={{ fontSize: '13px' }}>{dataProducts.count} Barang</small>
                                                 </div>
                                             </div>
                                         </div>
@@ -322,46 +228,36 @@ export function PayNow() {
                                 </div>
                             </div>
 
-                            
+
 
                             {/* DETAIL PEMBAYARAN */}
-                            <div className="body-products-last" >
+                            <div className="body-products-last">
                                 <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
                                     <div className="text-start d-flex justify-content-between">
                                         <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
                                             Detail Pembayaran
                                         </p>
                                     </div>
-                                    <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
-                                        <div class="p-2 text-secondary"><small><b>Subtotal</b></small></div>
-                                        <div class="p-2"><small><b>{Rupiah(dataProducts.total)}</b></small></div>
-                                    </div>
-                                    <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
-                                        {selectedPayment === null ? (
-                                            <div class="p-2 text-secondary"><small><b>Admin</b></small></div>
-                                        ) : (
-                                            <div class="p-2 text-secondary"><small><b>Admin ({selectedPayment})</b></small></div>
-                                        )}
-                                        {isFreeAdmin == true ? (
-                                            <div class="p-2 text-success"><small><b>Gratis</b></small></div>
-                                        ) : (
-                                            <div class="p-2"><small><b>{Rupiah(admin)}</b></small></div>
-                                        )}
-                                    </div>
-                                    <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
-                                        <div class="p-2 text-secondary"><small><b>Ongkir</b></small></div>
-                                        <div class="p-2 text-danger" style={{ fontSize: '14px' }}><small><i>*akan muncul setelah setelah klik <span className="text-info">"Bayar Sekarang"</span></i></small></div>
+                                    <div style={{ fontSize: '15px' }}>
+                                        <div class="d-flex justify-content-between text-dark" style={{ width: '100%' }}>
+                                            <div class="p-2 text-secondary"><small><b>Subtotal</b></small></div>
+                                            <div class="p-2"><small><b>{Rupiah(dataProducts.total)}</b></small></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between text-dark" style={{ width: '100%' }}>
+                                            <div class="p-2 text-secondary"><small><b>Ongkir</b></small></div>
+                                            <div class="p-2 text-danger" style={{ fontSize: '14px' }}><small><i>*akan muncul setelah setelah klik <span className="text-info">"Bayar Sekarang"</span></i></small></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
                             {/* MODAL KLIK BAYAR SEKARANG */}
                             <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                <div class="modal-dialog" role="document">
-                                    <div class="modal-content">
+                                <div class="modal-dialog" role="document" style={{padding: '10px'}}>
+                                    <div class="modal-content" style={{fontSize: '15px'}}>
                                         <div class="modal-header">
-                                            <h5 class="modal-title" id="exampleModalLabel">Peringatan !!</h5>
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <h2 class="modal-title" id="exampleModalLabel">Peringatan !!</h2>
+                                            <button type="button" style={{fontSize: '25px', marginRight: '10px'}} class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -369,8 +265,8 @@ export function PayNow() {
                                             Apakah data dan alamat mu sudah benar?
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-primary" data-dismiss="modal">Belum</button>
-                                            <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={handlePayNow}>Lanjut Bayar</button>
+                                            <button type="button" style={{fontSize: '15px'}} class="btn btn-primary" data-dismiss="modal">Belum</button>
+                                            <button type="button" style={{fontSize: '15px'}} class="btn btn-danger" data-dismiss="modal" onClick={handlePayNow}>Lanjut Bayar</button>
                                         </div>
                                     </div>
                                 </div>

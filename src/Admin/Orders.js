@@ -13,9 +13,12 @@ export function Orders() {
     const [dataOrderss, setDataOrders] = useState([]);
     useEffect(() => {
         getDataOrders();
-        setTimeout(() => {
+        const intervalId = setInterval(() => {
             getDataOrders();
-        }, 50000);
+        }, 8000);
+        return () => {
+            clearInterval(intervalId);
+        };
     }, []);
 
 

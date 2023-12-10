@@ -202,8 +202,6 @@ export function Checkout() {
                                             </div>
                                         </div>
                                     )}
-
-
                                 </div>
                             </div>
 

@@ -86,10 +86,10 @@ export function Pay() {
                     address: order[0].order_address,
                 },
             },
-            enabled_payments: ["credit_card", "cimb_clicks",
-                "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "permata_va",
-                "bca_va", "bni_va", "bri_va", "cimb_va", "other_va", "gopay", "indomaret"
-            ],
+            // enabled_payments: ["credit_card", "cimb_clicks",
+            //     "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "permata_va",
+            //     "bca_va", "bni_va", "bri_va", "cimb_va", "other_va", "gopay", "indomaret"
+            // ],
             // shipping_address: {
             //     address: order[0].order_address,
             // }
@@ -106,7 +106,7 @@ export function Pay() {
         })
 
         const payment_link = await response.json()
-        console.log(payment_link.token);
+        // console.log(payment_link.token);
         // console.log(payment_link);
         if (payment_link.payment_url) {
             // setPaymentUrl(payment_link.payment_url)
@@ -148,10 +148,10 @@ export function Pay() {
     useEffect(() => {
         getDataOrder();
         // getPaymentLink();
-        if (shippingInt <= 0 || isPay === "Validating") {
+        if (shippingInt <= 0 || isPay === "Validating" || isPay === "pending" || order[0].status === "Pending" || order[0].status === "Dikirim") {
             const intervalId = setInterval(() => {
                 getDataOrder();
-            }, 5000);
+            }, 8000);
             return () => {
                 clearInterval(intervalId);
             };
@@ -284,7 +284,7 @@ export function Pay() {
                             <nav className="navbar text-center" style={{ position: 'fixed', padding: '12px' }}>
                                 <div style={{ cursor: 'pointer' }} onClick={() => { window.history.back() }}>
                                 </div>
-                                <a class="navbar-brand" style={{ fontSize: '13px' }}><b>{shippingInt <= 0 ? "Menunggu Konfirmasi Admin" : order[0].is_pay === 'settlement' ? "Rincian Transaksi" : order[0].is_pay === 'Validating' ? "Menunggu Pembayaran" : order[0].is_pay === 'Failed' ? "Pesananmu Gagal !!!" : "Silahkan Membayar Sesuai Total Pembayaran"}</b></a>
+                                <a className="navbar-brand" style={{ fontSize: '13px' }}><b>{shippingInt <= 0 ? "Menunggu Konfirmasi Admin" : order[0].is_pay === 'settlement' ? "Rincian Transaksi" : order[0].is_pay === 'Validating' ? "Menunggu Pembayaran" : order[0].is_pay === 'Failed' ? "Pesananmu Gagal !!!" : "Silahkan Membayar Sesuai Total Pembayaran"}</b></a>
                             </nav>
 
                             {order.length > 0 ? (
@@ -337,7 +337,7 @@ export function Pay() {
                                         </div>
 
                                         {/* DETAIL PEMBAYARAN ++*/}
-                                        <div className={order[0].status === "Gagal" ||order[0].status === "Sukses" ? 'body-products' : 'body-products'}  >
+                                        <div className={order[0].status === "Gagal" || order[0].status === "Sukses" ? 'body-products' : 'body-products'}  >
                                             <div style={{ width: '100%', textAlign: 'left', padding: '15px', fontSize: '15px' }}>
                                                 <div className="d-flex justify-content-between text-dark" style={{ width: '100%' }}>
                                                     <div className="p-2 text-secondary"><small><b><p style={{ color: 'black', fontWeight: 'bold' }}>
@@ -349,27 +349,27 @@ export function Pay() {
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
-                                                    <div class="p-2 text-secondary"><small><b>Tanggal</b></small></div>
-                                                    <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{order[0].at_created}</b></div>
+                                                <div className="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
+                                                    <div className="p-2 text-secondary"><small><b>Tanggal</b></small></div>
+                                                    <div className="p-2 text-dark" style={{ fontSize: '14px' }}><b>{order[0].at_created}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
-                                                    <div class="p-2 text-secondary"><small><b>ID Transaksi</b></small></div>
-                                                    <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{order[0].id_transaction}</b></div>
+                                                <div className="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
+                                                    <div className="p-2 text-secondary"><small><b>ID Transaksi</b></small></div>
+                                                    <div className="p-2 text-dark" style={{ fontSize: '14px' }}><b>{order[0].id_transaction}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
-                                                    <div class="p-2 text-secondary"><small><b>Subtotal</b></small></div>
-                                                    <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{Rupiah(order[0].amount)}</b></div>
+                                                <div className="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
+                                                    <div className="p-2 text-secondary"><small><b>Subtotal</b></small></div>
+                                                    <div className="p-2 text-dark" style={{ fontSize: '14px' }}><b>{Rupiah(order[0].amount)}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
+                                                <div className="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '0px' }}>
-                                                    <div class="p-2 text-secondary"><small><b>Ongkir</b></small></div>
-                                                    <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{Rupiah(shippingInt)}</b></div>
+                                                <div className="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '0px' }}>
+                                                    <div className="p-2 text-secondary"><small><b>Ongkir</b></small></div>
+                                                    <div className="p-2 text-dark" style={{ fontSize: '14px' }}><b>{Rupiah(shippingInt)}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '0px' }}>
-                                                    <div class="p-2 text-secondary"><small><b>Total Pembayaran</b></small></div>
-                                                    <div class="p-2 text-success" style={{ fontSize: '16px' }}><b>{Rupiah(parseInt(order[0].amount) + shippingInt)}</b></div>
+                                                <div className="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '0px' }}>
+                                                    <div className="p-2 text-secondary"><small><b>Total Pembayaran</b></small></div>
+                                                    <div className="p-2 text-success" style={{ fontSize: '16px' }}><b>{Rupiah(parseInt(order[0].amount) + shippingInt)}</b></div>
                                                 </div>
                                                 {order[0].is_pay !== "settlement" || order[0].is_pay !== "Failed" && (
                                                     <div className="text-start mt-4" style={{ borderRadius: '5px', padding: '0px 15px', paddingTop: '15px', paddingBottom: '1px', background: 'rgb(235, 235, 235)', color: 'black' }}>
@@ -381,7 +381,7 @@ export function Pay() {
 
 
                                         {/* STATUS PESANAN */}
-                                        {order[0].is_pay === "Failed" && (
+                                        {order[0].is_pay === "Failed" || order[0].is_pay === "settlement" && (
                                             <div className="body-products-last"  >
                                                 <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
                                                     <div className="text-start d-flex justify-content-between">
@@ -390,8 +390,22 @@ export function Pay() {
                                                         </p>
                                                     </div>
                                                     <div style={{ alignItems: 'center', fontSize: '15px' }} className="d-flex justify-content-between">
-                                                        <div class="p-2 text-dark"><b>{order[0].at_created}</b></div>
+                                                        <div className="p-2 text-dark"><b>{order[0].at_created}</b></div>
                                                         <small className={`${order[0].status === "Pending" || order[0].status === "Dikirim" ? "text-info" : order[0].status === "Gagal" ? "text-danger" : "text-success"}`} style={{ fontWeight: 'bold' }}>{order[0].status}</small>
+                                                    </div>
+                                                    <div class="progress" style={{ height: '20px', fontSize: '10px' }}>
+                                                        <div class="progress-bar progress-bar-striped active" role="progressbar"
+                                                            style={{ width: order[0].status === 'Pending' ? '20%' : order[0].status === 'Dikirim' ? '70%' : order[0].status === 'Sukses' && '100%' }}
+                                                            aria-valuenow="20"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100">
+                                                            <div style={{ display: order[0].status === 'Sukses' ? 'none' : order[0].status === 'Gagal' && 'none' }}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width={order[0].status === 'Pending' ? '20' : order[0].status === 'Dikirim' ? '500' : order[0].status === 'Sukses' && '800'} height="20" viewBox="0 0 640 512"><path fill="currentColor" d="M624 352h-16V243.9c0-12.7-5.1-24.9-14.1-33.9L494 110.1c-9-9-21.2-14.1-33.9-14.1H416V48c0-26.5-21.5-48-48-48H112C85.5 0 64 21.5 64 48v48H8c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h272c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H40c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h208c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H8c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h208c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H64v128c0 53 43 96 96 96s96-43 96-96h128c0 53 43 96 96 96s96-43 96-96h48c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zM160 464c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48zm320 0c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48zm80-208H416V144h44.1l99.9 99.9V256z" /></svg>
+                                                            </div>
+                                                            <div style={{display: order[0].status === 'Sukses' ? 'block' : 'none'}}>
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="780" height="30" viewBox="0 0 48 48"><path fill="#8BC34A" d="M43 36H29V14h10.6c.9 0 1.6.6 1.9 1.4L45 26v8c0 1.1-.9 2-2 2z" /><path fill="#388E3C" d="M29 36H5c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h22c1.1 0 2 .9 2 2v27z" /><g fill="#37474F"><circle cx="37" cy="36" r="5" /><circle cx="13" cy="36" r="5" /></g><g fill="#78909C"><circle cx="37" cy="36" r="2" /><circle cx="13" cy="36" r="2" /></g><path fill="#37474F" d="M41 25h-7c-.6 0-1-.4-1-1v-7c0-.6.4-1 1-1h5.3c.4 0 .8.3.9.7l1.7 5.2c0 .1.1.2.1.3V24c0 .6-.4 1-1 1z" /><path fill="#DCEDC8" d="m21.8 13.8l-7.9 7.9l-3.7-3.8L8 20.1l5.9 5.9L24 15.9z" /></svg>
+                                                            </div>
+                                                        </div>
                                                     </div>
                                                     {order[0].note === "" ? (
                                                         null
@@ -405,21 +419,21 @@ export function Pay() {
                                         )}
 
                                         {/* MODAL KLIK BAYAR SEKARANG */}
-                                        <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document" style={{fontSize: '15px'}}>
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h2 class="modal-title" id="exampleModalLabel">Peringatan !!</h2>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true" style={{fontSize: '15px'}}>&times;</span>
+                                        <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div className="modal-dialog" role="document" style={{ fontSize: '15px' }}>
+                                                <div className="modal-content">
+                                                    <div className="modal-header">
+                                                        <h2 className="modal-title" id="exampleModalLabel">Peringatan !!</h2>
+                                                        <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                                                            <span aria-hidden="true" style={{ fontSize: '15px' }}>&times;</span>
                                                         </button>
                                                     </div>
-                                                    <div class="modal-body text-danger" style={{ fontWeight: 'bold' }}>
+                                                    <div className="modal-body text-danger" style={{ fontWeight: 'bold' }}>
                                                         Lanjut bayar pesanan?
                                                     </div>
-                                                    <div class="modal-footer">
-                                                        <button type="button" style={{fontSize: '15px'}} class="btn btn-primary" data-dismiss="modal">Belum</button>
-                                                        <button type="button" style={{fontSize: '15px'}} class="btn btn-danger" data-dismiss="modal" onClick={handleIsPay}>Lanjut</button>
+                                                    <div className="modal-footer">
+                                                        <button type="button" style={{ fontSize: '15px' }} className="btn btn-primary" data-dismiss="modal">Belum</button>
+                                                        <button type="button" style={{ fontSize: '15px' }} className="btn btn-danger" data-dismiss="modal" onClick={handleIsPay}>Lanjut</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -427,7 +441,7 @@ export function Pay() {
 
                                         {/* BOTTOM NAVIGATION */}
                                         {order[0].is_pay !== "settlement" && (
-                                            <footer class="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
+                                            <footer className="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
                                                 <div className="in-body-category" style={{ padding: '12px' }}>
                                                     <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
                                                         {order[0].is_pay === "Validating" || order[0].is_pay === "pending" ? (
@@ -448,10 +462,10 @@ export function Pay() {
 
                                         {/* CETAK STRUK */}
                                         {order[0].status === "Sukses" && (
-                                            <footer class="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
+                                            <footer className="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
                                                 <div className="in-body-category" style={{ padding: '12px' }}>
                                                     <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
-                                                        <div className="bg-success" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '40px', textAlign: 'center', borderRadius: '10px', cursor: 'pointer' }} onClick={() => window.open(order[0].payment, '_blank')} >
+                                                        <div className="bg-success" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '40px', textAlign: 'center', borderRadius: '10px', cursor: 'pointer' }} onClick={() => navigate('/invoice')} >
                                                             <p style={{ fontSize: '15px', color: 'white', margin: 'auto' }} >Cetak Struk</p>
                                                         </div>
                                                     </div>

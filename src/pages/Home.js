@@ -223,7 +223,7 @@ export function Home() {
                                                                 </small>
                                                                 {item.discount == 0 ? (
                                                                     <div>
-                                                                        <p className="card-text" style={{ fontSize: '12px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '10px' }}>Harga</p>
+                                                                        <p className="card-text" style={{ fontSize: '12px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '7px' }}>Harga</p>
                                                                         <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-15px' }}><b>{Rupiah(item.price)}</b></p>
 
                                                                     </div>
@@ -234,8 +234,6 @@ export function Home() {
 
                                                                     </div>
                                                                 )}
-
-
                                                             </div>
                                                         </div>
                                                     </div>

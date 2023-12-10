@@ -321,7 +321,7 @@ export function DetailProducts() {
                     ) : (
                         <>
                             {/* CROUSEL */}
-                            <div style={{marginTop: '20%', marginBottom: '8%'}}>
+                            <div style={{ marginTop: '20%', marginBottom: '8%' }}>
                                 <Swiper
                                     effect={'coverflow'}
                                     grabCursor={true}
@@ -344,7 +344,7 @@ export function DetailProducts() {
                                     className="swiper_container"
                                 >
                                     <SwiperSlide>
-                                        <img src={data.image} alt="slide_image" data-toggle="modal" data-target="#detailImage"/>
+                                        <img src={data.image} alt="slide_image" data-toggle="modal" data-target="#detailImage" />
                                     </SwiperSlide>
                                 </Swiper>
                             </div>
@@ -354,7 +354,7 @@ export function DetailProducts() {
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" style={{fontSize: '25px', marginRight: '10px'}} class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" style={{ fontSize: '25px', marginRight: '10px' }} class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -362,7 +362,7 @@ export function DetailProducts() {
                                             <img id="detail_image" className="d-block mx-auto" src={data.image} alt="slide" width={400} />
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" style={{fontSize: '15px', marginRight: '10px'}} class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" style={{ fontSize: '15px', marginRight: '10px' }} class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -475,13 +475,12 @@ export function DetailProducts() {
                                     <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
                                         <p className="card-text" style={{ fontSize: '12px', color: 'black', fontFamily: 'inherit', marginTop: '15px' }}><b>Jumlah Pembelian: </b></p>
                                         {/* <PlusMinusButton /> */}
-                                        <div style={{ marginLeft: '-50px' }}>
+                                        <div style={{ fontSize: '15px' }}>
                                             <button onClick={decrement} className="btn btn-light btn-sm text-dark">
-                                                <AiOutlineMinus className="text-sm text-md" />
-                                            </button>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M10 20a10 10 0 1 1 0-20a10 10 0 0 1 0 20zm5-11H5v2h10V9z" /></svg>                                                                    </button>
                                             <span className="text-dark" style={{ marginLeft: '10px', marginRight: '10px' }}>{count}</span>
                                             <button onClick={increment} className="btn btn-light btn-sm text-dark">
-                                                <AiOutlinePlus className="text-sm text-md" />
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="currentColor" /><g fill="#fff"><path d="M21 14h6v20h-6z" /><path d="M14 21h20v6H14z" /></g></svg>
                                             </button>
                                         </div>
                                         <p className="card-text" style={{ fontSize: '15px', color: 'green', fontFamily: 'inherit' }}><b>Total: {formatRupiah(total)}</b></p>
