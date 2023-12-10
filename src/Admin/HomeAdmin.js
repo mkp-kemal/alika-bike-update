@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilValue } from "recoil";
 import { baseURLAPI, dataBicycle } from "../store";
 import TruncateText from "../components/TruncateText";
@@ -11,8 +11,22 @@ import { useNavigate } from "react-router-dom";
 export function HomeAdmin() {
     const navigate = useNavigate();
     // ALL PRODUCTS WITH LOGIC KATEGORI
-    const { bicycle } = useRecoilValue(dataBicycle);
+    // const { bicycle } = useRecoilValue(dataBicycle);
     // const [posts, setPosts] = useRecoilState(dataBicycle)
+    const [bicycle, setBicycle] = useState([]);
+
+    const getDataProducts = () => {
+        axios.get(baseURLAPI('bicycle.php/'))
+            .then((response) => {
+                setBicycle(response.data);
+            }).catch((error) => {
+                console.log(error);
+            });
+    }
+
+    useEffect(() => {
+        getDataProducts();
+    }, []);
 
     // INPUT FORMAT PRICE
     const [addProductsPrice, setAddProductsPrice] = useState('');
@@ -130,9 +144,9 @@ export function HomeAdmin() {
             axios.post(baseURLAPI("admin/add_products.php"), formDataPost)
                 .then((response) => {
                     if (response.data.success) {
-                        showToastSuccess("Produk tersimpan");
+                        showToastSuccess("Produk diubah");
                         setTimeout(() => {
-                            window.location.reload();
+                            getDataProducts()
                         }, 1000);
                     } else if (response.data.error) {
                         showToastError("Code Produk tidak boleh sama");
@@ -172,7 +186,7 @@ export function HomeAdmin() {
                     if (response.data.success) {
                         showToastSuccess("Produk tersimpan");
                         setTimeout(() => {
-                            window.location.reload();
+                            getDataProducts()
                         }, 2000);
                     }
                 }).catch((error) => {
@@ -198,8 +212,11 @@ export function HomeAdmin() {
         ];
 
         // Parsing teks menjadi objek Date
-        const dateWithoutTime = dateString.split('pukul')[0].trim(); // Menghapus bagian waktu
-        const date = new Date(dateWithoutTime);
+        const dateParts = dateString.split('pukul')[0].trim().split(' ');
+        const day = parseInt(dateParts[0], 10);
+        const monthIndex = months.indexOf(dateParts[1]);
+        const year = parseInt(dateParts[2], 10);
+        const date = new Date(year, monthIndex, day);
 
         // Mendapatkan tanggal saat ini
         const today = new Date();
@@ -214,10 +231,9 @@ export function HomeAdmin() {
             return 'Kemarin';
         } else {
             // Mengembalikan format tanggal
-            const day = date.getDate();
-            const month = months[date.getMonth()];
-            const year = date.getFullYear();
-            return `${day} ${month} ${year}`;
+            const formattedDate = `${day} ${months[monthIndex]} ${year}`;
+            // console.log(timeDiff);
+            return formattedDate;
         }
     }
 
@@ -677,7 +693,7 @@ export function HomeAdmin() {
                                                                         <img src={items.image} width={50} />
                                                                         <td>{items.code_products}</td>
                                                                         <td>{TruncateText(items.name_products)}</td>
-                                                                        <td><b>{items.stock <= 0 ? "Habis": items.stock}</b></td>
+                                                                        <td><b>{items.stock <= 0 ? "Habis" : items.stock}</b></td>
                                                                         <td><b>{items.discount}</b></td>
                                                                         <td>{Rupiah(items.price)}</td>
                                                                         <td>{formatRelativeDateWithoutTime(items.at_created)}</td>

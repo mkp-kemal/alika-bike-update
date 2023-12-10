@@ -8,10 +8,12 @@ function Navbar() {
 
     return (
         <nav className="navbar" style={{ position: 'fixed' }}>
-            <div className="search-container">
-                <form>
+            {/* <div className="search-container"> */}
+            <div style={{color: 'white', fontSize: '15px', fontWeight: 'bold', marginTop: 'auto', marginLeft: '10px'}}>
+                {/* <form>
                     <input type="text" className="search-box" placeholder="Cari..." />
-                </form>
+                </form> */}
+                <p>Selamat Datang di Alika Bike</p>
             </div>
             <ul className="nav-icon">
                 <li style={{ cursor: 'pointer' }} onClick={() => { navigate('/admin/12345') }}>
