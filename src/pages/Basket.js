@@ -142,7 +142,7 @@ export function Basket() {
                     <ToastContainer />
 
                     {/* NAVBAR */}
-                    <nav className="navbar text-center" style={{ position: 'fixed' }}>
+                    <nav className="navbar text-center" style={{ position: 'fixed', padding: '15px' }}>
                         <div style={{ cursor: 'pointer' }} onClick={() => { window.history.back() }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M244 400L100 256l144-144M120 256h292" /></svg>
                         </div>
@@ -185,18 +185,17 @@ export function Basket() {
                                                                 {item.name_products}
                                                             </p>
                                                             {item.discount >= 1 ? (
-                                                                <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '-10px' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{formatRupiah(item.price)}</s></p>
+                                                                <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{formatRupiah(item.price)}</s></p>
                                                             ) : (null)}
-                                                            <p className="card-text" style={{ fontSize: '13px', color: 'black', fontFamily: 'inherit', marginTop: '-15px' }}><b>{formatRupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
+                                                            <p className="card-text" style={{ fontSize: '13px', color: 'black', fontFamily: 'inherit', marginTop: '-8px' }}><b>{formatRupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
                                                             <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
                                                                 <button className="btn btn-sm btn-danger" style={{ fontSize: '12px', fontFamily: 'inherit' }} onClick={() => { getDeleteProducts(item.id_basket) }}><b>Hapus</b></button>
-                                                                <div>
+                                                                <div style={{ fontSize: '15px' }}>
                                                                     <button onClick={() => { decrement(item.qty, item.code_products, item.price, item.discount) }} className="btn btn-light btn-sm text-dark">
-                                                                        <AiOutlineMinus className="text-sm text-md" />
-                                                                    </button>
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20"><path fill="currentColor" d="M10 20a10 10 0 1 1 0-20a10 10 0 0 1 0 20zm5-11H5v2h10V9z" /></svg>                                                                    </button>
                                                                     <span className="text-dark" style={{ marginLeft: '10px', marginRight: '10px' }}>{item.qty}</span>
                                                                     <button onClick={() => increment(item.qty, item.stock, item.code_products, item.price, item.discount)} className="btn btn-light btn-sm text-dark">
-                                                                        <AiOutlinePlus className="text-sm text-md" />
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 48 48"><circle cx="24" cy="24" r="21" fill="currentColor" /><g fill="#fff"><path d="M21 14h6v20h-6z" /><path d="M14 21h20v6H14z" /></g></svg>
                                                                     </button>
                                                                 </div>
                                                             </div>

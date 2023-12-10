@@ -3,6 +3,15 @@ import Navbar from "../components/Navbar";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { dataInfo, dataProductsBicycleDiscount, dataProductsDiscount, dataProductsSparePart } from "../store";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
+import TruncateText from "../components/TruncateText";
+import { Rupiah } from "../components/Rupiah";
+
 
 export function Home() {
     const navigate = useNavigate();
@@ -27,31 +36,13 @@ export function Home() {
         }, 1000);
     }, []);
 
-    //TRUNCATE TEXT
-    function truncateText(text) {
-        if (text.length > 40) {
-            return text.slice(0, 40) + "...";
-        }
-        return text;
-    }
-
-    //FORMAT RUPIAH
-    const formatRupiah = (amount) => {
-        const formatter = new Intl.NumberFormat("id-ID", {
-            style: "currency",
-            currency: "IDR",
-            minimumFractionDigits: 0,
-        });
-
-        return formatter.format(amount);
-    };
-
     // HITUNG POTONGAN DISKON
     const hitungHargaSetelahDiskon = (hargaAsal, persentaseDiskon) => {
         const potonganDiskon = (hargaAsal * persentaseDiskon) / 100;
         return hargaAsal - potonganDiskon;
     };
 
+    //GET DATA DETAIL PRODUCT
     const toDetailProduct = (idProduct) => {
         localStorage.setItem('idProduct', idProduct);
         navigate('/product');
@@ -74,14 +65,14 @@ export function Home() {
                                 <div className="body-category">
                                     <div className="in-body-category">
                                         <div className="category">
-                                            <div class="category-nav">
-                                                <div class="category-link-nav">
+                                            <div className="category-nav">
+                                                <div className="category-link-nav">
                                                     <a href="">
                                                         <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 48 48"><path fill="#EF6C00" d="m37.4 24.6l-11.6-2.2l-3.9-11.2l-3.8 1.3L22 23.6l-7.8 9l3 2.6l7.8-9l11.6 2.2l.8-3.8z" /><g fill="#FF9800"><path d="M24 19c-2.8 0-5 2.2-5 5s2.2 5 5 5s5-2.2 5-5s-2.2-5-5-5zm0 7c-1.1 0-2-.9-2-2s.9-2 2-2s2 .9 2 2s-.9 2-2 2z" /><path d="M40.7 27c.2-1 .3-2 .3-3s-.1-2-.3-3l3.3-2.4c.4-.3.6-.9.3-1.4L40 9.8c-.3-.5-.8-.7-1.3-.4L35 11c-1.5-1.3-3.3-2.3-5.2-3l-.4-4.1c-.1-.5-.5-.9-1-.9h-8.6c-.5 0-1 .4-1 .9L18.2 8c-1.9.7-3.7 1.7-5.2 3L9.3 9.3c-.5-.2-1.1 0-1.3.5l-4.3 7.4c-.3.5-.1 1.1.3 1.4L7.3 21c-.2 1-.3 2-.3 3s.1 2 .3 3L4 29.4c-.4.3-.6.9-.3 1.4L8 38.2c.3.5.8.7 1.3.4L13 37c1.5 1.3 3.3 2.3 5.2 3l.4 4.1c.1.5.5.9 1 .9h8.6c.5 0 1-.4 1-.9l.4-4.1c1.9-.7 3.7-1.7 5.2-3l3.7 1.7c.5.2 1.1 0 1.3-.4l4.3-7.4c.3-.5.1-1.1-.3-1.4L40.7 27zM24 35c-6.1 0-11-4.9-11-11s4.9-11 11-11s11 4.9 11 11s-4.9 11-11 11z" /></g></svg>
                                                         <p style={{ fontSize: '9px' }}>Layanan Bengkel</p>
                                                     </a>
                                                     <a href="">
-                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><defs><radialGradient id="vscodeIconsFolderTypeServicesOpened0" cx="20.365" cy="6.269" r="2.721" gradientTransform="matrix(-.148 .989 1.059 .158 11.812 -5.692)" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#bedcdc" /><stop offset=".5" stop-color="#8e9e9e" stop-opacity=".74" /><stop offset="1" stop-color="#404f5c" stop-opacity=".84" /></radialGradient><radialGradient id="vscodeIconsFolderTypeServicesOpened1" cx="6.566" cy="14.644" r="3.9" gradientTransform="matrix(-.148 .989 1.059 .158 9.451 15.181)" href="#vscodeIconsFolderTypeServicesOpened0" /></defs><path fill="#7bbedb" d="M27.4 5.5h-9.2l-2.1 4.2H4.3v4H.5l3.8 12.8h25.2v-21Zm-7.2 2.1h7.1v2.1h-8.1Zm5.5 6.1H6.6v-1.9h20.8v7.626Z" /><path fill="silver" d="m13.886 12.006l-1.803 1.803l-.901-1.803l.901-.901l1.803.901zm2.886-.094h-2.551L14.859 10h1.274l.639 1.912zm2.105 1.974l-1.803-1.803l1.803-.901l.902.901l-.902 1.803zm.094 2.886v-2.551l1.912.638v1.274l-1.912.639zm-1.974 2.105l1.803-1.803l.901 1.803l-.901.902l-1.803-.902zm-2.885.094h2.55l-.637 1.912H14.75l-.638-1.912zm-2.106-1.974l1.803 1.803l-1.803.901l-.901-.901l.901-1.803zm-.094-2.885v2.55L10 16.025V14.75l1.912-.638z" /><path fill="silver" d="M11.663 15.442a3.778 3.778 0 1 1 1.107 2.672a3.778 3.778 0 0 1-1.107-2.672Zm3.779 1.425a1.425 1.425 0 1 0-1.008-.418a1.425 1.425 0 0 0 1.008.418Z" /><path fill="#a9a9a9" d="M15.5 18.939a3.5 3.5 0 1 0-3.555-3.439a3.5 3.5 0 0 0 3.555 3.439Zm-.113-6.457a2.96 2.96 0 1 1-2.907 3.012a2.961 2.961 0 0 1 2.91-3.012Z" /><path fill="url(#vscodeIconsFolderTypeServicesOpened0)" d="M15.489 18.162a2.721 2.721 0 1 0-2.767-2.673a2.72 2.72 0 0 0 2.767 2.673Zm-.075-4.275a1.555 1.555 0 1 1-1.528 1.583a1.555 1.555 0 0 1 1.528-1.583Z" /><path fill="#a9a9a9" d="M15.47 17a1.555 1.555 0 1 0-1.583-1.526A1.555 1.555 0 0 0 15.47 17Zm-.051-2.87a1.316 1.316 0 1 1-1.292 1.339a1.316 1.316 0 0 1 1.292-1.337Z" /><path fill="silver" d="m27.572 19.763l-1.706-.947l1.098-1.176l1.024.568l-.416 1.555zm1.636 2.356l-1.005-1.672l1.539-.47l.603 1.004l-1.137 1.138zm.238 2.859l-.034-1.951l1.568.363l.02 1.17l-1.554.418zm-1.223 2.594l.946-1.706l1.176 1.098l-.567 1.024l-1.555-.416zm-2.357 1.636l1.673-1.005l.469 1.539l-1.003.603l-1.139-1.137zm-2.859.238l1.952-.034l-.363 1.568l-1.171.02l-.418-1.554zm-2.594-1.223l1.706.946l-1.098 1.176l-1.024-.567l.416-1.555zm-1.636-2.357l1.005 1.673l-1.539.469l-.603-1.003l1.137-1.139zm-.238-2.859l.034 1.952l-1.567-.363l-.021-1.171l1.554-.418zm1.224-2.594l-.947 1.706l-1.176-1.098l.568-1.024l1.555.416zm2.356-1.636l-1.672 1.005l-.47-1.539l1.004-.603l1.138 1.137zm2.859-.238l-1.951.034l.363-1.567l1.17-.021l.418 1.554z" /><path fill="silver" d="M23.9 18.372a5.626 5.626 0 1 1-3.946 1.716a5.625 5.625 0 0 1 3.946-1.716Zm-2.017 5.658a2.112 2.112 0 1 0 .592-1.5a2.11 2.11 0 0 0-.592 1.5Z" /><path fill="#a9a9a9" d="M24.081 29.045a5.053 5.053 0 1 0-5.14-4.964a5.054 5.054 0 0 0 5.14 4.964Zm-.163-9.327a4.275 4.275 0 1 1-4.2 4.35a4.275 4.275 0 0 1 4.2-4.35Z" /><path fill="url(#vscodeIconsFolderTypeServicesOpened1)" d="M24.061 27.893a3.9 3.9 0 1 0-3.967-3.832a3.9 3.9 0 0 0 3.967 3.832Zm-.105-6.027a2.128 2.128 0 1 1-2.09 2.164a2.127 2.127 0 0 1 2.089-2.164Z" /><path fill="#a9a9a9" d="M24.033 26.324a2.331 2.331 0 1 0-2.372-2.291a2.331 2.331 0 0 0 2.372 2.291Zm-.075-4.3a1.973 1.973 0 1 1-1.938 2.007a1.972 1.972 0 0 1 1.938-2.007Z" /></svg>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32"><defs><radialGradient id="vscodeIconsFolderTypeServicesOpened0" cx="20.365" cy="6.269" r="2.721" gradientTransform="matrix(-.148 .989 1.059 .158 11.812 -5.692)" gradientUnits="userSpaceOnUse"><stop offset="0" stopColor="#bedcdc" /><stop offset=".5" stopColor="#8e9e9e" stopOpacity=".74" /><stop offset="1" stopColor="#404f5c" stopOpacity=".84" /></radialGradient><radialGradient id="vscodeIconsFolderTypeServicesOpened1" cx="6.566" cy="14.644" r="3.9" gradientTransform="matrix(-.148 .989 1.059 .158 9.451 15.181)" href="#vscodeIconsFolderTypeServicesOpened0" /></defs><path fill="#7bbedb" d="M27.4 5.5h-9.2l-2.1 4.2H4.3v4H.5l3.8 12.8h25.2v-21Zm-7.2 2.1h7.1v2.1h-8.1Zm5.5 6.1H6.6v-1.9h20.8v7.626Z" /><path fill="silver" d="m13.886 12.006l-1.803 1.803l-.901-1.803l.901-.901l1.803.901zm2.886-.094h-2.551L14.859 10h1.274l.639 1.912zm2.105 1.974l-1.803-1.803l1.803-.901l.902.901l-.902 1.803zm.094 2.886v-2.551l1.912.638v1.274l-1.912.639zm-1.974 2.105l1.803-1.803l.901 1.803l-.901.902l-1.803-.902zm-2.885.094h2.55l-.637 1.912H14.75l-.638-1.912zm-2.106-1.974l1.803 1.803l-1.803.901l-.901-.901l.901-1.803zm-.094-2.885v2.55L10 16.025V14.75l1.912-.638z" /><path fill="silver" d="M11.663 15.442a3.778 3.778 0 1 1 1.107 2.672a3.778 3.778 0 0 1-1.107-2.672Zm3.779 1.425a1.425 1.425 0 1 0-1.008-.418a1.425 1.425 0 0 0 1.008.418Z" /><path fill="#a9a9a9" d="M15.5 18.939a3.5 3.5 0 1 0-3.555-3.439a3.5 3.5 0 0 0 3.555 3.439Zm-.113-6.457a2.96 2.96 0 1 1-2.907 3.012a2.961 2.961 0 0 1 2.91-3.012Z" /><path fill="url(#vscodeIconsFolderTypeServicesOpened0)" d="M15.489 18.162a2.721 2.721 0 1 0-2.767-2.673a2.72 2.72 0 0 0 2.767 2.673Zm-.075-4.275a1.555 1.555 0 1 1-1.528 1.583a1.555 1.555 0 0 1 1.528-1.583Z" /><path fill="#a9a9a9" d="M15.47 17a1.555 1.555 0 1 0-1.583-1.526A1.555 1.555 0 0 0 15.47 17Zm-.051-2.87a1.316 1.316 0 1 1-1.292 1.339a1.316 1.316 0 0 1 1.292-1.337Z" /><path fill="silver" d="m27.572 19.763l-1.706-.947l1.098-1.176l1.024.568l-.416 1.555zm1.636 2.356l-1.005-1.672l1.539-.47l.603 1.004l-1.137 1.138zm.238 2.859l-.034-1.951l1.568.363l.02 1.17l-1.554.418zm-1.223 2.594l.946-1.706l1.176 1.098l-.567 1.024l-1.555-.416zm-2.357 1.636l1.673-1.005l.469 1.539l-1.003.603l-1.139-1.137zm-2.859.238l1.952-.034l-.363 1.568l-1.171.02l-.418-1.554zm-2.594-1.223l1.706.946l-1.098 1.176l-1.024-.567l.416-1.555zm-1.636-2.357l1.005 1.673l-1.539.469l-.603-1.003l1.137-1.139zm-.238-2.859l.034 1.952l-1.567-.363l-.021-1.171l1.554-.418zm1.224-2.594l-.947 1.706l-1.176-1.098l.568-1.024l1.555.416zm2.356-1.636l-1.672 1.005l-.47-1.539l1.004-.603l1.138 1.137zm2.859-.238l-1.951.034l.363-1.567l1.17-.021l.418 1.554z" /><path fill="silver" d="M23.9 18.372a5.626 5.626 0 1 1-3.946 1.716a5.625 5.625 0 0 1 3.946-1.716Zm-2.017 5.658a2.112 2.112 0 1 0 .592-1.5a2.11 2.11 0 0 0-.592 1.5Z" /><path fill="#a9a9a9" d="M24.081 29.045a5.053 5.053 0 1 0-5.14-4.964a5.054 5.054 0 0 0 5.14 4.964Zm-.163-9.327a4.275 4.275 0 1 1-4.2 4.35a4.275 4.275 0 0 1 4.2-4.35Z" /><path fill="url(#vscodeIconsFolderTypeServicesOpened1)" d="M24.061 27.893a3.9 3.9 0 1 0-3.967-3.832a3.9 3.9 0 0 0 3.967 3.832Zm-.105-6.027a2.128 2.128 0 1 1-2.09 2.164a2.127 2.127 0 0 1 2.089-2.164Z" /><path fill="#a9a9a9" d="M24.033 26.324a2.331 2.331 0 1 0-2.372-2.291a2.331 2.331 0 0 0 2.372 2.291Zm-.075-4.3a1.973 1.973 0 1 1-1.938 2.007a1.972 1.972 0 0 1 1.938-2.007Z" /></svg>
                                                         <p style={{ fontSize: '9px' }}>Home Service</p>
                                                     </a>
                                                     <a href="">
@@ -93,7 +84,7 @@ export function Home() {
                                                         <p style={{ fontSize: '9px' }}>Beli Sepeda</p>
                                                     </a>
                                                     {/* <a href="">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+                    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
                 </a> */}
                                                 </div>
                                             </div>
@@ -104,37 +95,48 @@ export function Home() {
                             </div>
 
                             {/* CROUSEL */}
-                            <div className="info-crousel">
-                                <div id="other" className="carousel slide" data-ride="carousel">
-                                    <ol className="carousel-indicators">
-                                        <li data-target="#other" data-slide-to="0" className="active"></li>
-                                        <li data-target="#other" data-slide-to="1"></li>
-                                        <li data-target="#other" data-slide-to="2"></li>
-                                    </ol>
-                                    <div className="carousel-inner">
-                                        <div className="carousel-item active">
-                                            <img className="d-block mx-auto" src="https://astraotoshop.com/asset/2023/10/01/69b504c4-a1b9-40b8-b294-ae5bdcaecce4+aspira+oil.webp" alt="First slide" width={350} />
-                                        </div>
+                            <div>
+                                <Swiper
+                                    effect={'coverflow'}
+                                    grabCursor={true}
+                                    centeredSlides={true}
+                                    loop={true}
+                                    slidesPerView={'auto'}
+                                    coverflowEffect={{
+                                        rotate: 0,
+                                        stretch: 0,
+                                        depth: 100,
+                                        modifier: 2.5,
+                                    }}
+                                    pagination={{ el: '.swiper-pagination', clickable: true }}
+                                    navigation={{
+                                        nextEl: '.swiper-button-next',
+                                        prevEl: '.swiper-button-prev',
+                                        clickable: true,
+                                    }}
+                                    modules={[EffectCoverflow, Pagination, Navigation]}
+                                    className="swiper_container"
+                                >
+                                    {info.map((item) => (
+                                        <SwiperSlide>
+                                            <img src={item.image} alt="slide_image" />
+                                        </SwiperSlide>
+                                    ))}
 
-                                        {info.map((item) => (
-                                            <div className="carousel-item">
-                                                <img className="d-block mx-auto" src={item.image} alt="slide info" width={350} />
-                                            </div>
-                                        ))}
+
+                                    <div className="slider-controler">
+                                        <div className="swiper-button-prev slider-arrow">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M12.29 8.71L9.7 11.3a.996.996 0 0 0 0 1.41l2.59 2.59c.63.63 1.71.18 1.71-.71V9.41c0-.89-1.08-1.33-1.71-.7z" /></svg>
+                                        </div>
+                                        <div className="swiper-button-next slider-arrow">
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m11.71 15.29l2.59-2.59a.996.996 0 0 0 0-1.41L11.71 8.7c-.63-.62-1.71-.18-1.71.71v5.17c0 .9 1.08 1.34 1.71.71z" /></svg>                                        </div>
+                                        {/* <div className="swiper-pagination"></div> */}
                                     </div>
-                                    <a className="carousel-control-prev" href="#other" role="button" data-slide="prev">
-                                        <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                        <span className="sr-only">Previous</span>
-                                    </a>
-                                    <a className="carousel-control-next" href="#other" role="button" data-slide="next">
-                                        <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                        <span className="sr-only">Next</span>
-                                    </a>
-                                </div>
+                                </Swiper>
                             </div>
 
                             {/* BUTTON PROMO/TERBARU/TERLARIS */}
-                            <div style={{ display: 'flex', paddingLeft: '10px', marginTop: '10px', marginBottom: '5px' }}>
+                            <div style={{ display: 'flex', paddingLeft: '10px', marginTop: '20px', marginBottom: '5px' }}>
                                 <button type="button" className="btn btn-sm btn-outline-primary mr-2 activated " style={{ fontSize: '10px' }}>Promo</button>
                                 <button type="button" className="btn btn-sm btn-outline-primary mr-2" style={{ fontSize: '10px' }}>Terbaru</button>
                                 <button type="button" className="btn btn-sm btn-outline-primary" style={{ fontSize: '10px' }}>Terlaris</button>
@@ -142,22 +144,22 @@ export function Home() {
 
                             {/* PRODUK PROMO/TERBARU/TERLARIS */}
                             <div className="body-ptt">
-                                <div class="scrollmenu">
+                                <div className="scrollmenu">
                                     <div>
                                         {productsDiscount.map((item) => (
                                             <a onClick={() => { toDetailProduct(item.code_products) }}>
-                                                <div class="card">
-                                                    <div class="card-body">
-                                                        {/* <h5 class="card-title">Special title treatment</h5> */}
+                                                <div className="card">
+                                                    <div className="card-body">
+                                                        {/* <h5 className="card-title">Special title treatment</h5> */}
                                                         {/* <small className="modernWay" style={{ fontSize: '12px', color: 'gray' }}>Pabrik Sepeda Motor Listrik Exotic Cooltech AX Garansi Pabrik</small> */}
                                                         <p><img src={item.image} width={100} /></p>
-                                                        <div style={{ width: '130px', textAlign: 'left', marginLeft: '-10px' }}>
+                                                        <div style={{ width: '150px', textAlign: 'left', marginLeft: '-10px', padding: '10px' }}>
                                                             <small style={{ fontSize: '12px', color: 'gray' }}>
-                                                                {truncateText(item.name_products)}
+                                                                {TruncateText(item.name_products, 35)}
                                                                 {/* Pabrik Sepeda Motor Listrik Exotic Cooltech AX Garansi Pabrik */}
                                                             </small>
-                                                            <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{formatRupiah(item.price)}</s></p>
-                                                            <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-10px' }}><b>{formatRupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
+                                                            <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{Rupiah(item.price)}</s></p>
+                                                            <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-10px' }}><b>{Rupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -170,26 +172,26 @@ export function Home() {
                             {/* PRODUK SEPEDA DISKON*/}
                             <div className="body-products-sepeda">
                                 <div style={{ paddingTop: '10px', paddingLeft: '10px', marginBottom: '-25px' }}>
-                                    <p><b>Sepeda Diskon</b></p>
+                                    <h3><b>Sepeda Diskon</b></h3>
                                 </div>
-                                <div class="scrollmenu">
+                                <div className="scrollmenu">
                                     <div style={{ marginLeft: '150px' }}>
                                         <div>
                                             {productsBicycleDiscount.map((item) => (
                                                 <a onClick={() => { toDetailProduct(item.code_products) }}>
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            {/* <h5 class="card-title">Special title treatment</h5> */}
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            {/* <h5 className="card-title">Special title treatment</h5> */}
                                                             {/* <small className="modernWay" style={{ fontSize: '12px', color: 'gray' }}>Pabrik Sepeda Motor Listrik Exotic Cooltech AX Garansi Pabrik</small> */}
                                                             <p><img src={item.image} width={100} /></p>
-                                                            <div style={{ width: '130px', textAlign: 'left', marginLeft: '-10px' }}>
+                                                            <div style={{ width: '150px', textAlign: 'left', marginLeft: '-10px', padding: '10px' }}>
                                                                 <small style={{ fontSize: '12px', color: 'gray' }}>
                                                                     {/* {truncateText("Pabrik Sepeda Motor Listrik Exotic Cooltech AX Garansi Pabrik")} */}
-                                                                    {truncateText(item.name_products)}
+                                                                    {TruncateText(item.name_products, 35)}
                                                                     {/* Pabrik Sepeda Motor Listrik Exotic Cooltech AX Garansi Pabrik */}
                                                                 </small>
-                                                                <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{formatRupiah(item.price)}</s></p>
-                                                                <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-10px' }}><b>{formatRupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
+                                                                <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{Rupiah(item.price)}</s></p>
+                                                                <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-10px' }}><b>{Rupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -203,32 +205,32 @@ export function Home() {
                             {/* PRODUK SUKU CADANG */}
                             <div className="body-products-suku-cadang">
                                 <div style={{ paddingTop: '10px', paddingLeft: '10px', marginBottom: '-25px' }}>
-                                    <p><b>Suku Cadang Motor</b></p>
+                                    <h3><b>Suku Cadang Motor</b></h3>
                                 </div>
-                                <div class="scrollmenu">
+                                <div className="scrollmenu">
                                     <div style={{ marginLeft: '150px' }}>
                                         <div>
                                             {productsSparePart.map((item) => (
                                                 <a onClick={() => { toDetailProduct(item.code_products) }}>
-                                                    <div class="card">
-                                                        <div class="card-body">
-                                                            {/* <h5 class="card-title">Special title treatment</h5> */}
+                                                    <div className="card">
+                                                        <div className="card-body">
+                                                            {/* <h5 className="card-title">Special title treatment</h5> */}
                                                             {/* <small className="modernWay" style={{ fontSize: '12px', color: 'gray' }}>Pabrik Sepeda Motor Listrik Exotic Cooltech AX Garansi Pabrik</small> */}
                                                             <p><img src={item.image} width={100} /></p>
-                                                            <div style={{ width: '130px', textAlign: 'left', marginLeft: '-10px' }}>
+                                                            <div style={{ width: '150px', textAlign: 'left', marginLeft: '-10px', padding: '10px' }}>
                                                                 <small style={{ fontSize: '12px', color: 'gray' }}>
-                                                                    {truncateText(item.name_products)}
+                                                                    {TruncateText(item.name_products, 35)}
                                                                 </small>
                                                                 {item.discount == 0 ? (
                                                                     <div>
                                                                         <p className="card-text" style={{ fontSize: '12px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '10px' }}>Harga</p>
-                                                                        <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-15px' }}><b>{formatRupiah(item.price)}</b></p>
+                                                                        <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-15px' }}><b>{Rupiah(item.price)}</b></p>
 
                                                                     </div>
                                                                 ) : (
                                                                     <div>
-                                                                        <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{formatRupiah(item.price)}</s></p>
-                                                                        <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-10px' }}><b>{formatRupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
+                                                                        <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{Rupiah(item.price)}</s></p>
+                                                                        <p className="card-text" style={{ fontSize: '15px', color: 'gray', fontFamily: 'inherit', marginTop: '-10px' }}><b>{Rupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
 
                                                                     </div>
                                                                 )}
@@ -245,18 +247,18 @@ export function Home() {
                             </div>
 
                             {/* BOTTOM NAVIGATION */}
-                            <footer class="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
+                            <footer className="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
                                 <div className="in-body-category" style={{ backgroundColor: 'red' }}>
-                                    <div class="bottom-nav">
-                                        <div class="bottom-link-nav">
+                                    <div className="bottom-nav">
+                                        <div className="bottom-link-nav">
                                             <a href="/">
-                                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
+                                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path></svg>
                                             </a>
                                             <a href="https://wa.me/6285323666527" target="_blank">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 258"><defs><linearGradient id="logosWhatsappIcon0" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stop-color="#1FAF38" /><stop offset="100%" stop-color="#60D669" /></linearGradient><linearGradient id="logosWhatsappIcon1" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stop-color="#F9F9F9" /><stop offset="100%" stop-color="#FFF" /></linearGradient></defs><path fill="url(#logosWhatsappIcon0)" d="M5.463 127.456c-.006 21.677 5.658 42.843 16.428 61.499L4.433 252.697l65.232-17.104a122.994 122.994 0 0 0 58.8 14.97h.054c67.815 0 123.018-55.183 123.047-123.01c.013-32.867-12.775-63.773-36.009-87.025c-23.23-23.25-54.125-36.061-87.043-36.076c-67.823 0-123.022 55.18-123.05 123.004" /><path fill="url(#logosWhatsappIcon1)" d="M1.07 127.416c-.007 22.457 5.86 44.38 17.014 63.704L0 257.147l67.571-17.717c18.618 10.151 39.58 15.503 60.91 15.511h.055c70.248 0 127.434-57.168 127.464-127.423c.012-34.048-13.236-66.065-37.3-90.15C194.633 13.286 162.633.014 128.536 0C58.276 0 1.099 57.16 1.071 127.416Zm40.24 60.376l-2.523-4.005c-10.606-16.864-16.204-36.352-16.196-56.363C22.614 69.029 70.138 21.52 128.576 21.52c28.3.012 54.896 11.044 74.9 31.06c20.003 20.018 31.01 46.628 31.003 74.93c-.026 58.395-47.551 105.91-105.943 105.91h-.042c-19.013-.01-37.66-5.116-53.922-14.765l-3.87-2.295l-40.098 10.513l10.706-39.082Z" /><path fill="#FFF" d="M96.678 74.148c-2.386-5.303-4.897-5.41-7.166-5.503c-1.858-.08-3.982-.074-6.104-.074c-2.124 0-5.575.799-8.492 3.984c-2.92 3.188-11.148 10.892-11.148 26.561c0 15.67 11.413 30.813 13.004 32.94c1.593 2.123 22.033 35.307 54.405 48.073c26.904 10.609 32.379 8.499 38.218 7.967c5.84-.53 18.844-7.702 21.497-15.139c2.655-7.436 2.655-13.81 1.859-15.142c-.796-1.327-2.92-2.124-6.105-3.716c-3.186-1.593-18.844-9.298-21.763-10.361c-2.92-1.062-5.043-1.592-7.167 1.597c-2.124 3.184-8.223 10.356-10.082 12.48c-1.857 2.129-3.716 2.394-6.9.801c-3.187-1.598-13.444-4.957-25.613-15.806c-9.468-8.442-15.86-18.867-17.718-22.056c-1.858-3.184-.199-4.91 1.398-6.497c1.431-1.427 3.186-3.719 4.78-5.578c1.588-1.86 2.118-3.187 3.18-5.311c1.063-2.126.531-3.986-.264-5.579c-.798-1.593-6.987-17.343-9.819-23.64" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 256 258"><defs><linearGradient id="logosWhatsappIcon0" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stopColor="#1FAF38" /><stop offset="100%" stopColor="#60D669" /></linearGradient><linearGradient id="logosWhatsappIcon1" x1="50%" x2="50%" y1="100%" y2="0%"><stop offset="0%" stopColor="#F9F9F9" /><stop offset="100%" stopColor="#FFF" /></linearGradient></defs><path fill="url(#logosWhatsappIcon0)" d="M5.463 127.456c-.006 21.677 5.658 42.843 16.428 61.499L4.433 252.697l65.232-17.104a122.994 122.994 0 0 0 58.8 14.97h.054c67.815 0 123.018-55.183 123.047-123.01c.013-32.867-12.775-63.773-36.009-87.025c-23.23-23.25-54.125-36.061-87.043-36.076c-67.823 0-123.022 55.18-123.05 123.004" /><path fill="url(#logosWhatsappIcon1)" d="M1.07 127.416c-.007 22.457 5.86 44.38 17.014 63.704L0 257.147l67.571-17.717c18.618 10.151 39.58 15.503 60.91 15.511h.055c70.248 0 127.434-57.168 127.464-127.423c.012-34.048-13.236-66.065-37.3-90.15C194.633 13.286 162.633.014 128.536 0C58.276 0 1.099 57.16 1.071 127.416Zm40.24 60.376l-2.523-4.005c-10.606-16.864-16.204-36.352-16.196-56.363C22.614 69.029 70.138 21.52 128.576 21.52c28.3.012 54.896 11.044 74.9 31.06c20.003 20.018 31.01 46.628 31.003 74.93c-.026 58.395-47.551 105.91-105.943 105.91h-.042c-19.013-.01-37.66-5.116-53.922-14.765l-3.87-2.295l-40.098 10.513l10.706-39.082Z" /><path fill="#FFF" d="M96.678 74.148c-2.386-5.303-4.897-5.41-7.166-5.503c-1.858-.08-3.982-.074-6.104-.074c-2.124 0-5.575.799-8.492 3.984c-2.92 3.188-11.148 10.892-11.148 26.561c0 15.67 11.413 30.813 13.004 32.94c1.593 2.123 22.033 35.307 54.405 48.073c26.904 10.609 32.379 8.499 38.218 7.967c5.84-.53 18.844-7.702 21.497-15.139c2.655-7.436 2.655-13.81 1.859-15.142c-.796-1.327-2.92-2.124-6.105-3.716c-3.186-1.593-18.844-9.298-21.763-10.361c-2.92-1.062-5.043-1.592-7.167 1.597c-2.124 3.184-8.223 10.356-10.082 12.48c-1.857 2.129-3.716 2.394-6.9.801c-3.187-1.598-13.444-4.957-25.613-15.806c-9.468-8.442-15.86-18.867-17.718-22.056c-1.858-3.184-.199-4.91 1.398-6.497c1.431-1.427 3.186-3.719 4.78-5.578c1.588-1.86 2.118-3.187 3.18-5.311c1.063-2.126.531-3.986-.264-5.579c-.798-1.593-6.987-17.343-9.819-23.64" /></svg>
                                             </a>
                                             <a href="">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0" /></svg>
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 3a3 3 0 1 0 6 0a3 3 0 1 0-6 0" /></svg>
                                             </a>
                                         </div>
                                     </div>

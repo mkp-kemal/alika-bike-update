@@ -137,7 +137,7 @@ export function EditAddress() {
                     <ToastContainer />
 
                     {/* NAVBAR */}
-                    <nav className="navbar text-center" style={{ position: 'fixed' }}>
+                    <nav className="navbar text-center" style={{ position: 'fixed', padding: '15px' }}>
                         <div style={{ cursor: 'pointer' }} onClick={() => { window.history.back() }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M244 400L100 256l144-144M120 256h292" /></svg>
                         </div>
@@ -145,9 +145,9 @@ export function EditAddress() {
                     </nav>
 
                     {/* FORMS */}
-                    <div className="body-products" style={{ marginTop: '60px' }}>
+                    <div className="body-products" style={{ marginTop: '60px', fontSize: '16px', }}>
                         <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
-                            <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
+                            <p style={{  color: 'black', fontWeight: 'bold' }}>
                                 Data Penerima
                             </p>
                             <form>
@@ -163,7 +163,7 @@ export function EditAddress() {
                                     />
                                     <label htmlFor="name">Nama Lengkap</label>
                                 </div>
-                                <div className="address" style={{ marginTop: '-20px' }}>
+                                <div className="address" style={{ marginTop: '-10px' }}>
                                     <input
                                         type="number"
                                         name="whatsapp"
@@ -186,7 +186,7 @@ export function EditAddress() {
                                     />
                                     <label htmlFor="location">Jl... Kp...RW...RT... Desa... Kecamatan...</label>
                                 </div>
-                                <div className="address" style={{ marginTop: '-20px' }}>
+                                <div className="address" style={{ marginTop: '-10px' }}>
                                     <input
                                         type="text"
                                         name="landmark"

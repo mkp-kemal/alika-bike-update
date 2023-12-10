@@ -7,6 +7,12 @@ import { v4 as uuidv4 } from 'uuid';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { baseURLAPI } from "../store";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/pagination';
+import 'swiper/css/navigation';
+import { EffectCoverflow, Pagination, Navigation } from 'swiper/modules';
 
 
 export function DetailProducts() {
@@ -43,7 +49,7 @@ export function DetailProducts() {
         return (
             <div style={{ fontSize: '14px', color: 'gray' }}>
                 {text.split('.').map((item, key) => (
-                    <p style={{ marginTop: '-15px' }} key={key}>{item}</p>
+                    <p style={{ marginTop: '-10px' }} key={key}>{item}</p>
                 ))}
             </div>
         );
@@ -285,10 +291,9 @@ export function DetailProducts() {
                 <div className="header">
                     <ToastContainer />
                     {/* NAVBAR */}
-                    <nav className="navbar" style={{ position: 'fixed' }}>
-                        <div style={{ cursor: 'pointer' }} onClick={() => { window.history.back() }}>
+                    <nav className="navbar" style={{ position: 'fixed', padding: '7px' }}>
+                        <div style={{ cursor: 'pointer', marginLeft: '10px' }} onClick={() => { window.history.back() }}>
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M244 400L100 256l144-144M120 256h292" /></svg>
-
                         </div>
                         <ul className="nav-icon">
                             <li style={{ cursor: 'pointer' }}>
@@ -303,7 +308,7 @@ export function DetailProducts() {
                                 {totalBasket == 0 || totalBasket == null ? (
                                     null
                                 ) : (
-                                    <span class="badge badge-danger" style={{ marginTop: '-100px' }}>{totalBasket}</span>
+                                    <span class="badge badge-danger" style={{ fontSize: '10px' }}>{totalBasket}</span>
                                 )}
                             </li>
                         </ul>
@@ -316,25 +321,32 @@ export function DetailProducts() {
                     ) : (
                         <>
                             {/* CROUSEL */}
-                            <div id="other" className="carousel slide carousel-fade" data-ride="carousel" style={{ marginTop: '70px' }}>
-                                <ol className="carousel-indicators">
-                                    <li data-target="#other" data-slide-to="0" className="active"></li>
-                                    <li data-target="#other" data-slide-to="1"></li>
-                                    <li data-target="#other" data-slide-to="2"></li>
-                                </ol>
-                                <div className="carousel-inner">
-                                    <div className="carousel-item active" style={{ cursor: 'pointer' }} data-toggle="modal" data-target="#detailImage">
-                                        <img className="d-block mx-auto" src={data.image} alt="slide" width={200} />
-                                    </div>
-                                </div>
-                                <a className="carousel-control-prev bg-primary" href="#other" role="button" data-slide="prev" style={{ width: '30px' }}>
-                                    <span className="carousel-control-prev-icon" aria-hidden="true"></span>
-                                    <span className="sr-only" >Previous</span>
-                                </a>
-                                <a className="carousel-control-next bg-primary" href="#other" role="button" data-slide="next" style={{ width: '30px' }}>
-                                    <span className="carousel-control-next-icon" aria-hidden="true"></span>
-                                    <span className="sr-only">Next</span>
-                                </a>
+                            <div style={{marginTop: '20%', marginBottom: '8%'}}>
+                                <Swiper
+                                    effect={'coverflow'}
+                                    grabCursor={true}
+                                    centeredSlides={true}
+                                    loop={true}
+                                    slidesPerView={'auto'}
+                                    coverflowEffect={{
+                                        rotate: 90,
+                                        stretch: 0,
+                                        depth: 100,
+                                        modifier: 2.5,
+                                    }}
+                                    pagination={{ el: '.swiper-pagination', clickable: true }}
+                                    navigation={{
+                                        nextEl: '.swiper-button-next',
+                                        prevEl: '.swiper-button-prev',
+                                        clickable: true,
+                                    }}
+                                    modules={[EffectCoverflow, Pagination, Navigation]}
+                                    className="swiper_container"
+                                >
+                                    <SwiperSlide>
+                                        <img src={data.image} alt="slide_image" data-toggle="modal" data-target="#detailImage"/>
+                                    </SwiperSlide>
+                                </Swiper>
                             </div>
 
                             {/* DETAIL IMAGE FROM CROUSEL */}
@@ -342,7 +354,7 @@ export function DetailProducts() {
                                 <div class="modal-dialog" role="document">
                                     <div class="modal-content">
                                         <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <button type="button" style={{fontSize: '25px', marginRight: '10px'}} class="close" data-dismiss="modal" aria-label="Close">
                                                 <span aria-hidden="true">&times;</span>
                                             </button>
                                         </div>
@@ -350,7 +362,7 @@ export function DetailProducts() {
                                             <img id="detail_image" className="d-block mx-auto" src={data.image} alt="slide" width={400} />
                                         </div>
                                         <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button type="button" style={{fontSize: '15px', marginRight: '10px'}} class="btn btn-secondary" data-dismiss="modal">Close</button>
                                         </div>
                                     </div>
                                 </div>
@@ -358,7 +370,7 @@ export function DetailProducts() {
 
                             {/* DETAIL PRODUCT */}
                             <div className="body-products">
-                                <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
+                                <div style={{ width: '100%', textAlign: 'left', padding: '15px', fontSize: '15px' }}>
                                     {data.stock <= 0 ? (
                                         <p className="text-danger"><b>Stock Habis!!!</b></p>
                                     ) : (
@@ -367,13 +379,13 @@ export function DetailProducts() {
                                     {data.discount == 0 || data.discount == null ? (
                                         null
                                     ) : (
-                                        <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{data.discount}%</button><s>{formatRupiah(data.price)}</s></p>
+                                        <p className="card-text" style={{ color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{data.discount}%</button><s>{formatRupiah(data.price)}</s></p>
                                     )}
                                     <p className="card-text" style={{ fontSize: '15px', color: 'black', fontFamily: 'inherit', marginTop: '-10px' }}><b>{formatRupiah(hitungHargaSetelahDiskon(data.price, data.discount))}</b></p>
-                                    <p style={{ fontSize: '16px', color: 'gray', marginTop: '-15px' }}>
+                                    <p style={{ fontSize: '16px', color: 'gray' }}>
                                         {data.name_products}
                                     </p>
-                                    <p style={{ fontSize: '13px', color: 'rgba(128, 128, 128, 0.537)', marginTop: '-15px' }}>
+                                    <p style={{ fontSize: '13px', color: 'rgba(128, 128, 128, 0.537)', marginTop: '-10px' }}>
                                         SKU: {data.code_products}
                                     </p>
                                     {/* <p style={{ fontSize: '11px', color: 'rgba(128, 128, 128, 0.537)', marginTop: '-15px', marginBottom: '0px' }}>
@@ -385,8 +397,7 @@ export function DetailProducts() {
                             {/* DESKRIPSI PRODUCT */}
                             <div className="body-products-last">
                                 <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
-
-                                    <div className="text-start d-flex justify-content-between">
+                                    <div className="text-start d-flex justify-content-between mb-4">
                                         <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
                                             Deskripsi Produk
                                         </p>

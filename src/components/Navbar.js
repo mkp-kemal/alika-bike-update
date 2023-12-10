@@ -1,29 +1,11 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useRecoilValue } from "recoil";
 import { dataTotalBasket } from "../store";
 
 function Navbar() {
     const navigate = useNavigate();
+    let { totalBasket } = useRecoilValue(dataTotalBasket);
 
-    // HITUNG JUMLAH PRODUK DALAM BASKET
-    let {totalBasket} = useRecoilValue(dataTotalBasket);
-    // let [totalBasket, setTotalBasket] = useState('');
-    // const getTotalBasket = async () => {
-    //     const id_user = localStorage.getItem('@userID');
-    //     axios.get("http://localhost/alikabike/basket.php/" + id_user)
-    //     // axios.get("https://alikabike.000webhostapp.com/basket.php/" + id_user)
-    //         .then((response) => {
-    //             // setFormvalue(response.data)
-    //             setTotalBasket(response.data.total_produk)
-    //         }).catch((error) => {
-    //             console.log(error);
-    //         });
-    // }
-    // useEffect(() => {
-    //     getTotalBasket();
-    // }, []);
     return (
         <nav className="navbar" style={{ position: 'fixed' }}>
             <div className="search-container">
@@ -44,7 +26,7 @@ function Navbar() {
                     {totalBasket == 0 || totalBasket == null ? (
                         null
                     ) : (
-                        <span class="badge badge-danger" style={{ marginTop: '-100px' }}>{totalBasket}</span>
+                        <span class="badge badge-danger" style={{ marginTop: '-100px', fontSize: '10px' }}>{totalBasket}</span>
                     )}
                 </li>
             </ul>

@@ -90,10 +90,6 @@ export function Pay() {
                 "bca_klikbca", "bca_klikpay", "bri_epay", "echannel", "permata_va",
                 "bca_va", "bni_va", "bri_va", "cimb_va", "other_va", "gopay", "indomaret"
             ],
-            gopay: {
-                "enable_callback": true,
-                "callback_url": "http://gopay.com"
-            },
             // shipping_address: {
             //     address: order[0].order_address,
             // }
@@ -285,7 +281,7 @@ export function Pay() {
                     ) : (
                         <>
                             {/* NAVBAR */}
-                            <nav className="navbar text-center" style={{ position: 'fixed' }}>
+                            <nav className="navbar text-center" style={{ position: 'fixed', padding: '12px' }}>
                                 <div style={{ cursor: 'pointer' }} onClick={() => { window.history.back() }}>
                                 </div>
                                 <a class="navbar-brand" style={{ fontSize: '13px' }}><b>{shippingInt <= 0 ? "Menunggu Konfirmasi Admin" : order[0].is_pay === 'settlement' ? "Rincian Transaksi" : order[0].is_pay === 'Validating' ? "Menunggu Pembayaran" : order[0].is_pay === 'Failed' ? "Pesananmu Gagal !!!" : "Silahkan Membayar Sesuai Total Pembayaran"}</b></a>
@@ -319,21 +315,19 @@ export function Pay() {
                                                 {order.map((item) => (
                                                     <div style={{ borderRadius: '10px', boxShadow: '2px 2px 5px  gray', padding: '10px', marginTop: '10px' }}>
                                                         <div style={{ display: 'flex' }}>
-                                                            <div>
-                                                                <img src={item.image} width={80} style={{ cursor: 'pointer' }} alt="img" />
+                                                            <div style={{ margin: 'auto' }}>
+                                                                <img src={item.image} width={80} alt="img" />
                                                             </div>
-                                                            <div style={{ marginLeft: '5px', width: '100%' }}>
+                                                            <div style={{ marginLeft: '5px' }}>
                                                                 <p style={{ fontSize: '12px', color: 'gray' }}>
                                                                     {item.name_products}
                                                                 </p>
-                                                                {item.discount <= 0 ? (
-                                                                    null
-                                                                ) : (
-                                                                    <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit', marginTop: '-10px' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{Rupiah(item.price)}</s></p>
-                                                                )}
-                                                                <div style={{ color: 'green', alignItems: 'center' }} className="d-flex justify-content-between">
-                                                                    <small style={{ fontWeight: 'bold' }}><b>{Rupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></small>
-                                                                    <small className="text-secondary" style={{ fontSize: '12px' }}>{item.qty} Barang</small>
+                                                                {item.discount >= 1 ? (
+                                                                    <p className="card-text" style={{ fontSize: '10px', color: 'rgb(255, 96, 96)', fontFamily: 'inherit' }}><button className="btn btn-info btn-sm" style={{ fontSize: '10px', marginRight: '5px' }}>{item.discount}%</button><s>{Rupiah(item.price)}</s></p>
+                                                                ) : (null)}
+                                                                <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
+                                                                    <p className="card-text" style={{ fontSize: '13px', color: 'black', fontFamily: 'inherit', marginTop: '-5px' }}><b>{Rupiah(hitungHargaSetelahDiskon(item.price, item.discount))}</b></p>
+                                                                    <p className="card-text" style={{ fontSize: '13px', color: 'gray', fontFamily: 'inherit', marginTop: '-5px' }}>{item.qty} Barang</p>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -343,31 +337,31 @@ export function Pay() {
                                         </div>
 
                                         {/* DETAIL PEMBAYARAN ++*/}
-                                        <div className="body-products"  >
-                                            <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
+                                        <div className={order[0].status === "Gagal" ||order[0].status === "Sukses" ? 'body-products' : 'body-products'}  >
+                                            <div style={{ width: '100%', textAlign: 'left', padding: '15px', fontSize: '15px' }}>
                                                 <div className="d-flex justify-content-between text-dark" style={{ width: '100%' }}>
-                                                    <div className="p-2 text-secondary"><small><b><p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
+                                                    <div className="p-2 text-secondary"><small><b><p style={{ color: 'black', fontWeight: 'bold' }}>
                                                         Detail Pembayaran</p></b></small>
                                                     </div>
                                                     {order[0].is_pay === "settlement" && (
                                                         <div className="text-success">
-                                                            <span className="text-success" style={{ fontSize: '14px', fontWeight: 'bold' }}>Lunas </span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m10 17l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9m-6-8L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5l-9-4Z" /></svg>
+                                                            <span className="text-success" style={{ fontWeight: 'bold' }}>Lunas </span><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="m10 17l-4-4l1.41-1.41L10 14.17l6.59-6.59L18 9m-6-8L3 5v6c0 5.55 3.84 10.74 9 12c5.16-1.26 9-6.45 9-12V5l-9-4Z" /></svg>
                                                         </div>
                                                     )}
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
+                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
                                                     <div class="p-2 text-secondary"><small><b>Tanggal</b></small></div>
                                                     <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{order[0].at_created}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
+                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
                                                     <div class="p-2 text-secondary"><small><b>ID Transaksi</b></small></div>
                                                     <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{order[0].id_transaction}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
+                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
                                                     <div class="p-2 text-secondary"><small><b>Subtotal</b></small></div>
                                                     <div class="p-2 text-dark" style={{ fontSize: '14px' }}><b>{Rupiah(order[0].amount)}</b></div>
                                                 </div>
-                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-20px' }}>
+                                                <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '-10px' }}>
                                                 </div>
                                                 <div class="d-flex justify-content-between text-dark" style={{ width: '100%', marginTop: '0px' }}>
                                                     <div class="p-2 text-secondary"><small><b>Ongkir</b></small></div>
@@ -377,7 +371,7 @@ export function Pay() {
                                                     <div class="p-2 text-secondary"><small><b>Total Pembayaran</b></small></div>
                                                     <div class="p-2 text-success" style={{ fontSize: '16px' }}><b>{Rupiah(parseInt(order[0].amount) + shippingInt)}</b></div>
                                                 </div>
-                                                {order[0].is_pay !== "settlement" && (
+                                                {order[0].is_pay !== "settlement" || order[0].is_pay !== "Failed" && (
                                                     <div className="text-start mt-4" style={{ borderRadius: '5px', padding: '0px 15px', paddingTop: '15px', paddingBottom: '1px', background: 'rgb(235, 235, 235)', color: 'black' }}>
                                                         <p style={{ fontSize: '13px' }}><b>Info</b>: <br /><i>Rasakan pembayaran yang mudah, aman dan cepat, klik tombol "Bayar" untuk melakukan pembayaran</i></p>
                                                     </div>
@@ -387,7 +381,7 @@ export function Pay() {
 
 
                                         {/* STATUS PESANAN */}
-                                        {order[0].is_pay === "settlement" && (
+                                        {order[0].is_pay === "Failed" && (
                                             <div className="body-products-last"  >
                                                 <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
                                                     <div className="text-start d-flex justify-content-between">
@@ -395,8 +389,8 @@ export function Pay() {
                                                             Status Pesanan
                                                         </p>
                                                     </div>
-                                                    <div style={{ alignItems: 'center' }} className="d-flex justify-content-between">
-                                                        <div class="p-2 text-dark" style={{ fontSize: '13px' }}><b>{order[0].at_created}</b></div>
+                                                    <div style={{ alignItems: 'center', fontSize: '15px' }} className="d-flex justify-content-between">
+                                                        <div class="p-2 text-dark"><b>{order[0].at_created}</b></div>
                                                         <small className={`${order[0].status === "Pending" || order[0].status === "Dikirim" ? "text-info" : order[0].status === "Gagal" ? "text-danger" : "text-success"}`} style={{ fontWeight: 'bold' }}>{order[0].status}</small>
                                                     </div>
                                                     {order[0].note === "" ? (
@@ -412,20 +406,20 @@ export function Pay() {
 
                                         {/* MODAL KLIK BAYAR SEKARANG */}
                                         <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
+                                            <div class="modal-dialog" role="document" style={{fontSize: '15px'}}>
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h5 class="modal-title" id="exampleModalLabel">Peringatan !!</h5>
+                                                        <h2 class="modal-title" id="exampleModalLabel">Peringatan !!</h2>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
+                                                            <span aria-hidden="true" style={{fontSize: '15px'}}>&times;</span>
                                                         </button>
                                                     </div>
                                                     <div class="modal-body text-danger" style={{ fontWeight: 'bold' }}>
                                                         Lanjut bayar pesanan?
                                                     </div>
                                                     <div class="modal-footer">
-                                                        <button type="button" class="btn btn-primary" data-dismiss="modal">Belum</button>
-                                                        <button type="button" class="btn btn-danger" data-dismiss="modal" onClick={handleIsPay}>Lanjut</button>
+                                                        <button type="button" style={{fontSize: '15px'}} class="btn btn-primary" data-dismiss="modal">Belum</button>
+                                                        <button type="button" style={{fontSize: '15px'}} class="btn btn-danger" data-dismiss="modal" onClick={handleIsPay}>Lanjut</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -436,11 +430,11 @@ export function Pay() {
                                             <footer class="bottom-nav navbar-light" style={{ padding: '0px', boxShadow: '0px 0px 6px rgba(0, 0, 0, 0.30)', zIndex: '15', background: 'white', width: '100%', maxWidth: '450px' }}>
                                                 <div className="in-body-category" style={{ padding: '12px' }}>
                                                     <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
-                                                        {order[0].is_pay === "Validating" ? (
+                                                        {order[0].is_pay === "Validating" || order[0].is_pay === "pending" ? (
                                                             <div className="bg-info" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '40px', textAlign: 'center', borderRadius: '10px', cursor: 'pointer' }} onClick={() => window.open(order[0].payment, '_blank')} >
                                                                 <p style={{ fontSize: '15px', color: 'white', margin: 'auto' }} >Selesaikan Pembayaran</p>
                                                             </div>
-                                                        ) : order[0].is_pay === "settlement" ? (
+                                                        ) : order[0].is_pay === "settlement" || order[0].is_pay === "Failed" ? (
                                                             null
                                                         ) : (
                                                             <div className="bg-danger" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '100%', height: '40px', textAlign: 'center', borderRadius: '10px', cursor: 'pointer' }} data-toggle="modal" data-target="#exampleModal" >

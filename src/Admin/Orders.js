@@ -8,12 +8,15 @@ import { ToastContainer, toast } from 'react-toastify';
 import $ from "jquery";
 
 export function Orders() {
-    // ALL PRODUCTS WITH LOGIC KATEGORI
-    const { orders } = useRecoilValue(dataOrders);
-    const [dataOrderss, setDataOrders] = useRecoilState(dataOrdersAtom);
+    // const { orders } = useRecoilValue(dataOrders);
+    // const [dataOrderss, setDataOrders] = useRecoilState(dataOrdersAtom);
+    const [dataOrderss, setDataOrders] = useState([]);
     useEffect(() => {
-        setDataOrders(orders);
-    }, [setDataOrders, orders]);
+        getDataOrders();
+        setTimeout(() => {
+            getDataOrders();
+        }, 50000);
+    }, []);
 
 
 
@@ -89,11 +92,11 @@ export function Orders() {
         $("#productsDetailModal");
     };
 
-    const [dataOrdersReload, setDataOrdersReload] = useState([]);
+    // const [dataOrdersReload, setDataOrdersReload] = useState([]);
     const getDataOrders = () => {
         axios.get(baseURLAPI('orders.php/'))
             .then((response) => {
-                setDataOrdersReload(response.data);
+                setDataOrders(response.data);
             }).catch((error) => {
                 console.log(error);
             });
@@ -115,8 +118,9 @@ export function Orders() {
                 if (response.data.success) {
                     showToastSuccess("Ongkir ditambahkan");
                     setTimeout(() => {
-                        setDataOrders(orders);
-                    }, 2000);
+                        // setDataOrders(orders);
+                        getDataOrders();
+                    }, 1000);
                 }
             }).catch((error) => {
                 console.log(error);
@@ -143,7 +147,7 @@ export function Orders() {
                 if (response.data.success) {
                     showToastSuccess("Pesanan digagalkan");
                     setTimeout(() => {
-                        window.location.reload();
+                        getDataOrders();
                     }, 1000);
                 }
             }).catch((error) => {
@@ -161,7 +165,7 @@ export function Orders() {
                 if (response.data.success) {
                     showToastSuccess("Pesanan Sukses");
                     setTimeout(() => {
-                        window.location.reload();
+                        getDataOrders();
                     }, 1000);
                 }
             }).catch((error) => {
@@ -190,7 +194,7 @@ export function Orders() {
                 if (response.data.success) {
                     showToastSuccess("Pembayaran telah dikonfirmasi, silahkan kirim barang");
                     setTimeout(() => {
-                        window.location.reload();
+                        getDataOrders();
                     }, 1000);
                 }
             }).catch((error) => {
@@ -215,7 +219,7 @@ export function Orders() {
                 if (response.data.success) {
                     showToastSuccess("Barang proses pengiriman");
                     setTimeout(() => {
-                        window.location.reload();
+                        getDataOrders();
                     }, 1000);
                 }
             }).catch((error) => {

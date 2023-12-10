@@ -8,6 +8,8 @@ import { baseURLAPI } from "../store";
 export function AddAddress() {
     const idUser = localStorage.getItem("@userID");
     const navigate = useNavigate();
+    const [isLoading, setIsloading] = useState(false);
+
 
     // TOAST INFO
     const showToastInfo = (msg) => {
@@ -88,12 +90,13 @@ export function AddAddress() {
             formDataPost.append('landmark', formData.landmark);
             formDataPost.append('at_created', date);
             axios.post(baseURLAPI("address.php"), formDataPost)
-            // axios.post("https://alikabike.000webhostapp.com/address.php", formDataPost)
+                // axios.post("https://alikabike.000webhostapp.com/address.php", formDataPost)
                 .then((response) => {
                     if (response.data.success) {
+                        setIsloading(true);
                         showToastSuccess("Alamat tersimpan");
                         setTimeout(() => {
-                            navigate('/checkout')
+                            window.history.back()
                         }, 2000);
                     }
                 }).catch((error) => {
@@ -185,28 +188,19 @@ export function AddAddress() {
                         <div className="in-body-category" style={{ padding: '12px' }}>
                             <div className="text-start d-flex justify-content-between" style={{ display: 'flex', alignItems: 'center' }}>
                                 <p className="card-text text-danger" style={{ fontSize: '12px', fontFamily: 'inherit', marginTop: '15px' }}><i>*alamatmu akan disimpan untuk sementara saja</i></p>
-                                {/* <div className="bg-primary" style={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', width: '250px', height: '40px', textAlign: 'center', borderRadius: '10px' }} >
-                                    <p style={{ fontSize: '15px', color: 'white', margin: 'auto' }}>Simpan Alamat</p>
-                                </div> */}
-                                <div
-                                    className="bg-primary"
-                                    style={{
-                                        cursor: 'pointer',
-                                        display: 'flex',
-                                        alignItems: 'right',
-                                        justifyContent: 'centeright',
-                                        width: '250px',
-                                        height: '40px',
-                                        textAlign: 'center',
-                                        borderRadius: '10px',
-                                        // display: isFormValid ? 'flex' : 'none',
-                                    }}
-                                    onClick={handleSaveAddress}
-                                >
-                                    <p style={{ fontSize: '15px', color: 'white', margin: 'auto' }}>
-                                        Simpan Alamat
-                                    </p>
-                                </div>
+                                {isLoading ? (
+                                    <div className="bg-primary" style={{ cursor: 'pointer', display: 'flex', alignItems: 'right', justifyContent: 'centeright', width: '250px', height: '40px', textAlign: 'center', borderRadius: '10px', }}>
+                                        <p style={{ fontSize: '15px', color: 'white', margin: 'auto' }}>
+                                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24"><circle cx="4" cy="12" r="3" fill="currentColor"><animate id="svgSpinners3DotsFade0" fill="freeze" attributeName="opacity" begin="0;svgSpinners3DotsFade1.end-0.25s" dur="0.75s" values="1;.2" /></circle><circle cx="12" cy="12" r="3" fill="currentColor" opacity=".4"><animate fill="freeze" attributeName="opacity" begin="svgSpinners3DotsFade0.begin+0.15s" dur="0.75s" values="1;.2" /></circle><circle cx="20" cy="12" r="3" fill="currentColor" opacity=".3"><animate id="svgSpinners3DotsFade1" fill="freeze" attributeName="opacity" begin="svgSpinners3DotsFade0.begin+0.3s" dur="0.75s" values="1;.2" /></circle></svg>
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div className="bg-primary" style={{ cursor: 'pointer', display: 'flex', alignItems: 'right', justifyContent: 'centeright', width: '250px', height: '40px', textAlign: 'center', borderRadius: '10px', }} onClick={handleSaveAddress}>
+                                        <p style={{ fontSize: '15px', color: 'white', margin: 'auto' }}>
+                                            Simpan Alamat
+                                        </p>
+                                    </div>
+                                )}
                             </div>
                         </div>
                     </footer>
