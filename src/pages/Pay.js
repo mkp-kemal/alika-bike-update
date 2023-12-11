@@ -371,7 +371,7 @@ export function Pay() {
                                                     <div className="p-2 text-secondary"><small><b>Total Pembayaran</b></small></div>
                                                     <div className="p-2 text-success" style={{ fontSize: '16px' }}><b>{Rupiah(parseInt(order[0].amount) + shippingInt)}</b></div>
                                                 </div>
-                                                {order[0].is_pay !== "settlement" || order[0].is_pay !== "Failed" && (
+                                                {order[0].is_pay === 'No' && (
                                                     <div className="text-start mt-4" style={{ borderRadius: '5px', padding: '0px 15px', paddingTop: '15px', paddingBottom: '1px', background: 'rgb(235, 235, 235)', color: 'black' }}>
                                                         <p style={{ fontSize: '13px' }}><b>Info</b>: <br /><i>Rasakan pembayaran yang mudah, aman dan cepat, klik tombol "Bayar" untuk melakukan pembayaran</i></p>
                                                     </div>

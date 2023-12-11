@@ -21,6 +21,7 @@ export function DetailProducts() {
     const idUser = localStorage.getItem("@userID");
     const navigate = useNavigate();
     const [isLoading, setIsloading] = useState(true);
+    const device = navigator.userAgent;
 
     // MENAMPILKAN SEMUA DATA
     const [data, setData] = useState('');
@@ -181,10 +182,10 @@ export function DetailProducts() {
             formData.append('code_products', data.code_products);
             formData.append('qty', 1);
             formData.append('amount', total);
+            formData.append('device', device);
             formData.append('basket_date', date);
             formData.append('payNow', 'No');
             const response = await axios.post(baseURLAPI("basket.php"), formData);
-            // const response = await axios.post("https://alikabike.000webhostapp.com/basket.php", formData);
             if (response.data.success) {
                 getTotalBasket();
                 showToastSuccess('Produk Berhasil Ditambah')
@@ -200,6 +201,7 @@ export function DetailProducts() {
                 formData.append('code_products', data.code_products);
                 formData.append('qty', 1);
                 formData.append('amount', total);
+                formData.append('device', device);
                 formData.append('basket_date', date);
                 formData.append('payNow', 'No');
 
@@ -218,6 +220,7 @@ export function DetailProducts() {
 
     const handlePayNow = async () => {
         const storedUserID = localStorage.getItem('@userID');
+        const formData = new FormData();
         // DATE
         const current = new Date();
         const monthNames = [
@@ -232,41 +235,28 @@ export function DetailProducts() {
         const seconds = current.getSeconds();
         const formattedDate = `${day} ${month} ${year} pukul ${hours}.${minutes}.${seconds}`;
         const date = formattedDate;
-
         if (!storedUserID) {
             const id_user = uuidv4();
             localStorage.setItem('@userID', id_user);
-            // const formData = new FormData();
-            // formData.append('id_user', id_user);
-            // formData.append('code_products', data.code_products);
-            // formData.append('qty', 1);
-            // formData.append('amount', total);
-            // formData.append('basket_date', date);
-            // formData.append('payNow', 'Yes');
+            formData.append('id_user', id_user);
+            formData.append('device', device);
+            formData.append('at_created', date);
             const productData = {
                 code: data.code_products,
+                name_products: data.name_products,
                 count: count,
+                discount: data.discount,
+                image: data.image,
+                price: data.price,
                 total: total,
             };
 
             localStorage.setItem('@product', JSON.stringify(productData));
-            // if (data.code_products) {
-            //     navigate('/buy');
-            // }
+            const response = await axios.post(baseURLAPI("pay_now.php"), formData);
+            if (response.data.success) {
+                navigate('/buy');
+            }
         } else {
-            // // JIKA QTY MELEBIHI STOK
-            // if (parseInt(totalQty) >= data.stock) {
-            //     showToastError('Produk dalam keranjang melebihi stock')
-            //     console.log(totalQty);
-            // } else {
-            // const formData = new FormData();
-            // formData.append('id_user', storedUserID);
-            // formData.append('code_products', data.code_products);
-            // formData.append('qty', count);
-            // formData.append('amount', total);
-            // formData.append('basket_date', date);
-            // formData.append('payNow', 'Yes');
-
             const productData = {
                 code: data.code_products,
                 name_products: data.name_products,
