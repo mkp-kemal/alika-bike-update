@@ -381,8 +381,8 @@ export function Pay() {
 
 
                                         {/* STATUS PESANAN */}
-                                        {order[0].is_pay === "Failed" || order[0].is_pay === "settlement" && (
-                                            <div className="body-products-last"  >
+                                        {order[0].is_pay === "Failed" || order[0].is_pay === "settlement" ? (
+                                            <div className="body-products-last">
                                                 <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
                                                     <div className="text-start d-flex justify-content-between">
                                                         <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
@@ -394,29 +394,30 @@ export function Pay() {
                                                         <small className={`${order[0].status === "Pending" || order[0].status === "Dikirim" ? "text-info" : order[0].status === "Gagal" ? "text-danger" : "text-success"}`} style={{ fontWeight: 'bold' }}>{order[0].status}</small>
                                                     </div>
                                                     <div class="progress" style={{ height: '20px', fontSize: '10px' }}>
-                                                        <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                                            style={{ width: order[0].status === 'Pending' ? '20%' : order[0].status === 'Dikirim' ? '70%' : order[0].status === 'Sukses' && '100%' }}
+                                                        <div class={`progress-bar progress-bar-striped active ${order[0].status === 'Gagal' && 'bg-warning'}`} role="progressbar"
+                                                            style={{ width: order[0].status === 'Pending' ? '20%' : order[0].status === 'Dikirim' ? '70%' : order[0].status === 'Gagal' && '100%' }}
                                                             aria-valuenow="20"
                                                             aria-valuemin="0"
                                                             aria-valuemax="100">
                                                             <div style={{ display: order[0].status === 'Sukses' ? 'none' : order[0].status === 'Gagal' && 'none' }}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width={order[0].status === 'Pending' ? '20' : order[0].status === 'Dikirim' ? '500' : order[0].status === 'Sukses' && '800'} height="20" viewBox="0 0 640 512"><path fill="currentColor" d="M624 352h-16V243.9c0-12.7-5.1-24.9-14.1-33.9L494 110.1c-9-9-21.2-14.1-33.9-14.1H416V48c0-26.5-21.5-48-48-48H112C85.5 0 64 21.5 64 48v48H8c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h272c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H40c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h208c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H8c-4.4 0-8 3.6-8 8v16c0 4.4 3.6 8 8 8h208c4.4 0 8 3.6 8 8v16c0 4.4-3.6 8-8 8H64v128c0 53 43 96 96 96s96-43 96-96h128c0 53 43 96 96 96s96-43 96-96h48c8.8 0 16-7.2 16-16v-32c0-8.8-7.2-16-16-16zM160 464c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48zm320 0c-26.5 0-48-21.5-48-48s21.5-48 48-48s48 21.5 48 48s-21.5 48-48 48zm80-208H416V144h44.1l99.9 99.9V256z" /></svg>
                                                             </div>
-                                                            <div style={{display: order[0].status === 'Sukses' ? 'block' : 'none'}}>
+                                                            <div style={{ display: order[0].status === 'Sukses' ? 'block' : 'none' }}>
                                                                 <svg xmlns="http://www.w3.org/2000/svg" width="780" height="30" viewBox="0 0 48 48"><path fill="#8BC34A" d="M43 36H29V14h10.6c.9 0 1.6.6 1.9 1.4L45 26v8c0 1.1-.9 2-2 2z" /><path fill="#388E3C" d="M29 36H5c-1.1 0-2-.9-2-2V9c0-1.1.9-2 2-2h22c1.1 0 2 .9 2 2v27z" /><g fill="#37474F"><circle cx="37" cy="36" r="5" /><circle cx="13" cy="36" r="5" /></g><g fill="#78909C"><circle cx="37" cy="36" r="2" /><circle cx="13" cy="36" r="2" /></g><path fill="#37474F" d="M41 25h-7c-.6 0-1-.4-1-1v-7c0-.6.4-1 1-1h5.3c.4 0 .8.3.9.7l1.7 5.2c0 .1.1.2.1.3V24c0 .6-.4 1-1 1z" /><path fill="#DCEDC8" d="m21.8 13.8l-7.9 7.9l-3.7-3.8L8 20.1l5.9 5.9L24 15.9z" /></svg>
                                                             </div>
+                                                            <div style={{ display: order[0].status === 'Gagal' ? 'block' : 'none' }} className="text-danger">
+                                                                <svg xmlns="http://www.w3.org/2000/svg" width="780" height="30" viewBox="0 0 24 24"><path fill="currentColor" d="M20 8h-3V4H3c-1.11 0-2 .89-2 2v11h2c0 1.66 1.34 3 3 3s3-1.34 3-3h6c0 1.66 1.34 3 3 3s3-1.34 3-3h2v-5l-3-4M6 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5s1.5.67 1.5 1.5s-.67 1.5-1.5 1.5m6.54-6.38l-1.42 1.42L9 11.41l-2.12 2.13l-1.41-1.42L7.59 10L5.46 7.88l1.42-1.41L9 8.59l2.12-2.12l1.42 1.41L10.41 10l2.13 2.12M18 18.5c-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5s1.5.67 1.5 1.5s-.67 1.5-1.5 1.5M17 12V9.5h2.5l1.96 2.5H17Z" /></svg>                                                            </div>
                                                         </div>
                                                     </div>
-                                                    {order[0].note === "" ? (
-                                                        null
-                                                    ) : (
-                                                        <div className="text-start" style={{ borderRadius: '5px', padding: '0px 15px', paddingTop: '15px', paddingBottom: '1px', background: 'rgb(235, 235, 235)', color: 'black' }}>
-                                                            <p style={{ fontSize: '13px' }}><b>Info</b>: <br /><i className="text-danger">{order[0].note}</i></p>
-                                                        </div>
-                                                    )}
+                                                    {order[0].is_pay === "Failed" &&
+                                                        (
+                                                            <div className="text-start" style={{ borderRadius: '5px', padding: '0px 15px', paddingTop: '15px', paddingBottom: '1px', background: 'rgb(235, 235, 235)', color: 'black' }}>
+                                                                <p style={{ fontSize: '13px' }}><b>Info</b>: <br /><i className="text-danger">{order[0].note}</i></p>
+                                                            </div>
+                                                        )}
                                                 </div>
                                             </div>
-                                        )}
+                                        ) : null}
 
                                         {/* MODAL KLIK BAYAR SEKARANG */}
                                         <div className="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">

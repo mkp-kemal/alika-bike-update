@@ -607,7 +607,7 @@ export function Orders() {
                                                             </p>
                                                             <div className="d-flex justify-content-between">
                                                                 <p>Tgl. Pesan: {item.at_created}</p>
-                                                                <p>ID Transaksi: {item.id_transaction}</p>
+                                                                <p>ID Transaksi: <a href={`http://localhost:3000/pay?payment=${item.id_transaction}`} target="_blank">{item.id_transaction}</a></p>
                                                             </div>
                                                             <p style={{ marginTop: '-15px' }}>Tgl. Bayar: {item.at_updated} <a href={item.payment} target="_blank">{item.payment}</a></p>
                                                             <p>Ongkir: {item.shipping <= 0 ? (
@@ -634,6 +634,10 @@ export function Orders() {
                                                                             <button className="btn btn-success btn-sm m-2" onClick={() => handleOrderSuccess(item.id_transaction)}>Sukseskan Pesanan</button>
                                                                         )}
                                                                         <button className="btn btn-danger btn-sm m-2" data-toggle="modal" data-target="#orderFailed" onClick={() => handleOrderFailedClick(item.id_transaction)}>Gagalkan Semua Pesanan</button>
+                                                                    </>
+                                                                ) : item.is_pay === 'No' ? (
+                                                                    <>
+                                                                        <button className="btn btn-danger btn-sm m-2" data-toggle="modal" data-target="#orderFailed" onClick={() => handleOrderFailedClick(item.id_transaction)}>Gagalkan Pesanan</button>
                                                                     </>
                                                                 ) : null}
                                                             </p>
