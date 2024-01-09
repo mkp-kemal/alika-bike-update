@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { baseURLAPI } from "../store";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 export function EditAddress() {
     const idUser = localStorage.getItem("@userID");
@@ -57,7 +58,7 @@ export function EditAddress() {
     const [formData, setFormData] = useState({
         name: '',
         whatsapp: '',
-        location: '',
+        // location: '',
         landmark: '',
     });
 
@@ -85,7 +86,7 @@ export function EditAddress() {
     const [dataAddress, setDataAddress] = useState([]);
     const getDataAddress = () => {
         axios.get(baseURLAPI("edit_address.php/") + idUser)
-        // axios.get("https://alikabike.000webhostapp.com/edit_address.php/" + idUser)
+            // axios.get("https://alikabike.000webhostapp.com/edit_address.php/" + idUser)
             .then((response) => {
                 setTotalRowAddress(response.data.total_rows);
                 setFormData(response.data);
@@ -107,11 +108,11 @@ export function EditAddress() {
             formDataPost.append('id_user', idUser);
             formDataPost.append('name', formData.name);
             formDataPost.append('whatsapp', formData.whatsapp);
-            formDataPost.append('location', formData.location);
+            formDataPost.append('location', getLocGeo.latitude + "," + getLocGeo.longitude);
             formDataPost.append('landmark', formData.landmark);
             formDataPost.append('at_updated', date);
             axios.post(baseURLAPI("edit_address.php"), formDataPost)
-            // axios.post("https://alikabike.000webhostapp.com/edit_address.php", formDataPost)
+                // axios.post("https://alikabike.000webhostapp.com/edit_address.php", formDataPost)
                 .then((response) => {
                     if (response.data.success) {
                         setIsloading(true);
@@ -130,6 +131,25 @@ export function EditAddress() {
         }
     };
 
+    // LOCATION
+    const [getLoc, setGetLoc] = useState({});
+    const [getLocGeo, setGetLocGeo] = useState({});
+    useEffect(() => {
+        getLocation()
+        geoLocation()
+    }, [])
+    const getLocation = async () => {
+        const location = await axios.get("https://ipapi.co/json");
+        setGetLoc(location.data);
+    }
+    const geoLocation = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            // console.log(position);
+            const { latitude, longitude } = position.coords;
+            setGetLocGeo({ latitude, longitude });
+        })
+    }
+
     return (
         <div className="outBody">
             <div className="body">
@@ -147,7 +167,7 @@ export function EditAddress() {
                     {/* FORMS */}
                     <div className="body-products" style={{ marginTop: '60px', fontSize: '16px' }}>
                         <div style={{ width: '100%', textAlign: 'left', padding: '15px' }}>
-                            <p style={{  color: 'black', fontWeight: 'bold' }}>
+                            <p style={{ color: 'black', fontWeight: 'bold' }}>
                                 Data Penerima
                             </p>
                             <form>
@@ -176,7 +196,7 @@ export function EditAddress() {
                                 <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
                                     Alamat Penerima
                                 </p>
-                                <div className="address">
+                                {/* <div className="address">
                                     <input
                                         type="text"
                                         name="location"
@@ -185,7 +205,7 @@ export function EditAddress() {
                                         onChange={handleInputChange}
                                     />
                                     <label htmlFor="location">Jl... Kp...RW...RT... Desa... Kecamatan...</label>
-                                </div>
+                                </div> */}
                                 <div className="address" style={{ marginTop: '-10px' }}>
                                     <input
                                         type="text"
@@ -196,6 +216,45 @@ export function EditAddress() {
                                     />
                                     <label htmlFor="landmark">Patokan dekat apa..</label>
                                 </div>
+                                {getLocGeo.latitude === undefined ? (
+                                    <>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="2" r="0" fill="#007bff"><animate attributeName="r" begin="0" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(45 12 12)"><animate attributeName="r" begin="0.125s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(90 12 12)"><animate attributeName="r" begin="0.25s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(135 12 12)"><animate attributeName="r" begin="0.375s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(180 12 12)"><animate attributeName="r" begin="0.5s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(225 12 12)"><animate attributeName="r" begin="0.625s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(270 12 12)"><animate attributeName="r" begin="0.75s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(315 12 12)"><animate attributeName="r" begin="0.875s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle></svg>
+                                        <small className="text-dark ml-2">Nyalakan gps perangkat untuk memuat lokasi</small>
+                                    </>
+                                ) : (
+                                    <>
+                                        <a href={`https://www.google.com/maps/dir//${getLocGeo.latitude},${getLocGeo.longitude}`} target="_blank">Cek di google maps</a>
+                                        <MapContainer center={[getLocGeo.latitude, getLocGeo.longitude]} zoom={12}>
+                                            <TileLayer
+                                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                            />
+                                            <Marker
+                                                // key={park.properties.PARK_ID}
+                                                position={[
+                                                    getLocGeo.latitude,
+                                                    getLocGeo.longitude
+                                                ]}
+                                                onClick={() => {
+                                                    // setActivePark(park);
+                                                }}
+                                            // icon={icon}
+                                            />
+
+                                            <Popup
+                                                position={[
+                                                    getLocGeo.latitude,
+                                                    getLocGeo.longitude
+                                                ]}
+                                            >
+                                                <div>
+                                                    <h2>{getLocGeo.latitude}</h2>
+                                                    <p>{getLocGeo.longitude}</p>
+                                                </div>
+                                            </Popup>
+                                        </MapContainer>
+                                    </>
+                                )}
                             </form>
                             {isFormValid ? (null) : (
                                 <p className="card-text text-danger" style={{ fontSize: '12px', fontFamily: 'inherit', marginTop: '15px' }}><i>*{textError}</i></p>

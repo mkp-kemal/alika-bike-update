@@ -445,3 +445,8 @@ html {
 .swiper-pagination .swiper-pagination-bullet-active {
     background: var(--primary);
 }
+
+.leaflet-container {
+    width: 100%;
+    height: 30vh;
+  }

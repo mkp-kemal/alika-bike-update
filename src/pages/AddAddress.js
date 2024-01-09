@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { baseURLAPI } from "../store";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 
 export function AddAddress() {
     const idUser = localStorage.getItem("@userID");
@@ -58,7 +59,7 @@ export function AddAddress() {
     const [formData, setFormData] = useState({
         username: '',
         phoneNumber: '',
-        address: '',
+        // address: '',
         landmark: '',
     });
 
@@ -86,7 +87,7 @@ export function AddAddress() {
             formDataPost.append('id_user', idUser);
             formDataPost.append('name', formData.username);
             formDataPost.append('whatsapp', formData.phoneNumber);
-            formDataPost.append('location', formData.address);
+            formDataPost.append('location', getLocGeo.latitude + "," + getLocGeo.longitude);
             formDataPost.append('landmark', formData.landmark);
             formDataPost.append('at_created', date);
             axios.post(baseURLAPI("address.php"), formDataPost)
@@ -108,6 +109,24 @@ export function AddAddress() {
         }
     };
 
+    // LOCATION
+    const [getLoc, setGetLoc] = useState({});
+    const [getLocGeo, setGetLocGeo] = useState({});
+    useEffect(() => {
+        getLocation()
+        geoLocation()
+    }, [])
+    const getLocation = async () => {
+        const location = await axios.get("https://ipapi.co/json");
+        setGetLoc(location.data);
+    }
+    const geoLocation = () => {
+        navigator.geolocation.getCurrentPosition((position) => {
+            // console.log(position);
+            const { latitude, longitude } = position.coords;
+            setGetLocGeo({ latitude, longitude });
+        })
+    }
 
     return (
         <div className="outBody">
@@ -155,17 +174,7 @@ export function AddAddress() {
                                 <p style={{ fontSize: '14px', color: 'black', fontWeight: 'bold' }}>
                                     Alamat Penerima
                                 </p>
-                                <div className="address">
-                                    <input
-                                        type="text"
-                                        name="address"
-                                        required
-                                        value={formData.address}
-                                        onChange={handleInputChange}
-                                    />
-                                    <label htmlFor="address">Jl... Kp... Desa... Kecamatan...</label>
-                                </div>
-                                <div className="address" style={{ marginTop: '-20px' }}>
+                                <div className="address" style={{ marginTop: '10px' }}>
                                     <input
                                         type="text"
                                         name="landmark"
@@ -175,10 +184,58 @@ export function AddAddress() {
                                     />
                                     <label htmlFor="landmark">Patokan dekat apa..</label>
                                 </div>
+                                {getLocGeo.latitude === undefined ? (
+                                    <>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><circle cx="12" cy="2" r="0" fill="#007bff"><animate attributeName="r" begin="0" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(45 12 12)"><animate attributeName="r" begin="0.125s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(90 12 12)"><animate attributeName="r" begin="0.25s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(135 12 12)"><animate attributeName="r" begin="0.375s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(180 12 12)"><animate attributeName="r" begin="0.5s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(225 12 12)"><animate attributeName="r" begin="0.625s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(270 12 12)"><animate attributeName="r" begin="0.75s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle><circle cx="12" cy="2" r="0" fill="#007bff" transform="rotate(315 12 12)"><animate attributeName="r" begin="0.875s" calcMode="spline" dur="1s" keySplines="0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8;0.2 0.2 0.4 0.8" repeatCount="indefinite" values="0;2;0;0" /></circle></svg>
+                                        <small className="text-dark ml-2">Nyalakan gps perangkat untuk memuat lokasi</small>
+                                    </>
+                                ) : (
+                                    <>
+                                        <a href={`https://www.google.com/maps/dir//${getLocGeo.latitude},${getLocGeo.longitude}`} target="_blank">Cek di google maps</a>
+                                        <MapContainer center={[getLocGeo.latitude, getLocGeo.longitude]} zoom={12}>
+                                            <TileLayer
+                                                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                                                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                                            />
+                                            <Marker
+                                                // key={park.properties.PARK_ID}
+                                                position={[
+                                                    getLocGeo.latitude,
+                                                    getLocGeo.longitude
+                                                ]}
+                                                onClick={() => {
+                                                    // setActivePark(park);
+                                                }}
+                                            // icon={icon}
+                                            />
+
+                                            <Popup
+                                                position={[
+                                                    getLocGeo.latitude,
+                                                    getLocGeo.longitude
+                                                ]}
+                                            >
+                                                <div>
+                                                    <h2>{getLocGeo.latitude}</h2>
+                                                    <p>{getLocGeo.longitude}</p>
+                                                </div>
+                                            </Popup>
+                                        </MapContainer>
+                                    </>
+                                )}
+                                {/* <div className="address">
+                                    <input
+                                        type="text"
+                                        name="address"
+                                        required
+                                        value={formData.address}
+                                        onChange={handleInputChange}
+                                    />
+                                    <label htmlFor="address">Jl... Kp... Desa... Kecamatan...</label>
+                                </div> */}
                             </form>
                             {isFormValid ? (null) : (
-                                <p className="card-text text-danger" style={{ fontSize: '12px', fontFamily: 'inherit', marginTop: '15px' }}><i>*{textError}</i></p>
-
+                                <p className="card-text text-danger" style={{ fontSize: '12px', fontFamily: 'inherit', marginTop: '15px', marginBottom: '70px' }}><i>*{textError}</i></p>
                             )}
                         </div>
                     </div>
